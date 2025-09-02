@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ItineraryData, TripPreferences } from '@/types/trip';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { TrendingUp, Ticket, List, CalendarDays } from 'lucide-react';
+import { Plane, Train, Bus, Wallet, List, CalendarDays } from 'lucide-react';
 import { ListView } from './list-view';
 import { CalendarView } from './calendar-view';
 
@@ -22,7 +22,7 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline">
-          Your Trip to {preferences.destination}
+          Your Trip from {preferences.source} to {preferences.destination}
         </h2>
         <p className="mt-2 text-lg text-muted-foreground">
           An AI-crafted itinerary based on your preferences.
@@ -32,23 +32,27 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Budget Forecast</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
+            <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              {itineraryData.budget_forecast}
+            <p className="text-2xl font-bold">
+              {itineraryData.total_budget}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Travel Availability</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Travel Options</CardTitle>
+            <div className="flex gap-1">
+                <Plane className="h-4 w-4 text-muted-foreground" />
+                <Train className="h-4 w-4 text-muted-foreground" />
+                <Bus className="h-4 w-4 text-muted-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              {itineraryData.travel_availability}
+              {itineraryData.travel_options}
             </p>
           </CardContent>
         </Card>

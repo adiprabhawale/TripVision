@@ -12,11 +12,16 @@ export async function getItinerary(
     const validatedPreferences = {
         ...preferences,
         duration: parseInt(preferences.duration, 10),
+        numberOfPeople: parseInt(preferences.numberOfPeople, 10),
+        budget: preferences.budget,
         startDate: format(preferences.startDate, 'yyyy-MM-dd')
     }
 
     if (isNaN(validatedPreferences.duration) || validatedPreferences.duration <= 0) {
         return { error: 'Please enter a valid trip duration.' };
+    }
+    if (isNaN(validatedPreferences.numberOfPeople) || validatedPreferences.numberOfPeople <= 0) {
+        return { error: 'Please enter a valid number of people.' };
     }
 
     const result = await generatePersonalizedTripItinerary(validatedPreferences, apiKey);

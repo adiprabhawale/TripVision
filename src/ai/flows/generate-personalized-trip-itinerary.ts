@@ -11,10 +11,14 @@ import {getAi} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GeneratePersonalizedTripItineraryInputSchema = z.object({
+  source: z.string().describe('The starting point for the trip.'),
   destination: z.string().describe('The destination for the trip.'),
   startDate: z.string().describe('The start date for the trip (YYYY-MM-DD).'),
   duration: z.number().describe('The duration of the trip in days.'),
-  budget: z.string().describe('The budget for the trip.'),
+  numberOfPeople: z.number().describe('The number of people traveling.'),
+  budget: z.number().describe('The budget for the trip.'),
+  budgetType: z.enum(['per-person', 'group']).describe('The type of budget (per person or total group).'),
+  travelType: z.string().describe('The type of travel (e.g., Business, Friends, Family).'),
   interests: z.string().describe('The interests of the traveler.'),
 });
 
@@ -35,14 +39,8 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
       ),
     })
   ),
-  budget_forecast: z
-    .string()
-    .describe(
-      'A brief analysis of how shifting the dates might affect the trip\'s cost.'
-    ),
-  travel_availability: z
-    .string()
-    .describe('A summary of flight and hotel availability for the chosen dates.'),
+  total_budget: z.string().describe("The calculated total budget for the trip."),
+  travel_options: z.string().describe("A summary of flight, train, and bus options for the travel dates."),
 });
 
 export type GeneratePersonalizedTripItineraryOutput =
@@ -66,12 +64,20 @@ function getPrompt(ai: any) {
     Also, provide insights on booking considerations like travel availability and pricing.
   
     User Preferences:
+    Source: {{{source}}}
     Destination: {{{destination}}}
     Start Date: {{{startDate}}}
     Duration: {{{duration}}} days
-    Budget: {{{budget}}}
+    Number of People: {{{numberOfPeople}}}
+    Budget: {{{budget}}} (This is a {{budgetType}} budget)
+    Travel Type: {{{travelType}}}
     Interests: {{{interests}}}
   
+    Please provide the following:
+    1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
+    2. The total estimated budget for the trip for all people.
+    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates.
+
     Provide the response in JSON format.
     The JSON should conform to the following schema:
     {
@@ -98,16 +104,16 @@ function getPrompt(ai: any) {
             }
           }
         },
-        "budget_forecast": {
+        "total_budget": {
            "type": "STRING",
-           "description": "A brief analysis of how shifting the dates might affect the trip's cost."
+           "description": "The calculated total budget for the trip."
         },
-        "travel_availability": {
+        "travel_options": {
            "type": "STRING",
-           "description": "A summary of flight and hotel availability for the chosen dates."
+           "description": "A summary of flight, train, and bus options for the travel dates."
         }
       },
-      "required": ["itinerary", "budget_forecast", "travel_availability"]
+      "required": ["itinerary", "total_budget", "travel_options"]
     }
     Make sure the generated JSON is parsable.
     `,

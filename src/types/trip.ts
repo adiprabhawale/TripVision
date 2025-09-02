@@ -12,14 +12,18 @@ export interface DailyPlan {
 
 export interface ItineraryData {
   itinerary: DailyPlan[];
-  budget_forecast: string;
-  travel_availability: string;
+  total_budget: string;
+  travel_options: string;
 }
 
 export interface TripPreferences {
+    source: string;
     destination: string;
     startDate: Date;
     duration: string;
-    budget: string;
+    numberOfPeople: string;
+    budgetType: 'per-person' | 'group';
+    budget: number;
+    travelType: string;
     interests: string;
 }
