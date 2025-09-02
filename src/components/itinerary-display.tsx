@@ -4,9 +4,9 @@ import { useState } from 'react';
 import type { ItineraryData, TripPreferences, TravelOption, StayOption } from '@/types/trip';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Plane, Train, Bus, Wallet, List, CalendarDays, ExternalLink, Ticket, Milestone, BedDouble } from 'lucide-react';
+import { Plane, Train, Bus, Wallet, List, Map, ExternalLink, Ticket, Milestone, BedDouble } from 'lucide-react';
 import { ListView } from './list-view';
-import { CalendarView } from './calendar-view';
+import { MapView } from './map-view';
 import { Separator } from './ui/separator';
 
 interface ItineraryDisplayProps {
@@ -14,7 +14,7 @@ interface ItineraryDisplayProps {
   preferences: TripPreferences;
 }
 
-type ViewMode = 'list' | 'calendar';
+type ViewMode = 'list' | 'map';
 
 const TravelOptionIcon = ({ type }: { type: TravelOption['type'] }) => {
     switch (type) {
@@ -59,21 +59,20 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
             List View
           </Button>
           <Button
-            variant={viewMode === 'calendar' ? 'default' : 'outline'}
-            onClick={() => setViewMode('calendar')}
+            variant={viewMode === 'map' ? 'default' : 'outline'}
+            onClick={() => setViewMode('map')}
           >
-            <CalendarDays className="mr-2 h-4 w-4" />
-            Calendar View
+            <Map className="mr-2 h-4 w-4" />
+            Map View
           </Button>
         </div>
 
         {viewMode === 'list' ? (
           <ListView itinerary={itineraryData.itinerary} />
         ) : (
-          <CalendarView
+          <MapView
             itinerary={itineraryData.itinerary}
-            startDate={preferences.startDate}
-            duration={parseInt(preferences.duration)}
+            stayOptions={itineraryData.stay_options}
           />
         )}
       </div>

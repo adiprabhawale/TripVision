@@ -10,6 +10,11 @@
 import {getAi} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const LocationSchema = z.object({
+  latitude: z.number().describe('The latitude of the location.'),
+  longitude: z.number().describe('The longitude of the location.'),
+});
+
 const GeneratePersonalizedTripItineraryInputSchema = z.object({
   source: z.string().describe('The starting point for the trip.'),
   destination: z.string().describe('The destination for the trip.'),
@@ -36,6 +41,7 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
           time: z.string(),
           description: z.string(),
           estimated_cost: z.string(),
+          location: LocationSchema.optional().describe('The geographical coordinates of the activity.'),
         })
       ),
     })
@@ -55,6 +61,7 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
     price_per_night: z.string().describe("The estimated price per night."),
     bookingLink: z.string().url().describe("An example booking link to a site like Booking.com, Airbnb, or the property's website."),
     details: z.string().describe("A short summary of the accommodation, including rating or key features."),
+    location: LocationSchema.optional().describe('The geographical coordinates of the accommodation.'),
   })).describe("A list of accommodation options that fit the user's budget and stay preferences."),
 });
 
@@ -89,14 +96,14 @@ function getPrompt(ai: any) {
     Interests: {{{interests}}}
   
     Please provide the following:
-    1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
+    1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type. For each activity, include its estimated latitude and longitude if applicable.
     2. The total estimated budget for the trip for all people. If the estimated total budget exceeds the user's specified budget, provide a brief explanation in the 'budget_notes' field.
     3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates.
-    4. A list of accommodation options that fit the user's budget and stay type preference.
+    4. A list of accommodation options that fit the user's budget and stay type preference. For each stay option, include its estimated latitude and longitude.
 
     For each travel option, provide the name of the carrier/service, an estimated fare, a short summary of the trip, and an example booking link (e.g., to Google Flights, Kayak, Amtrak, etc.). If a travel mode is not available, set the fare to "Unavailable" and provide a link to a general travel search engine. For trips with connections, describe the different legs in the details.
     
-    For each stay option, provide the property name, type, price per night, a short summary, and a direct booking link (e.g., to Booking.com, Airbnb, etc.).
+    For each stay option, provide the property name, type, price per night, a short summary, a direct booking link (e.g., to Booking.com, Airbnb, etc.), and its location coordinates.
 
     Provide the response in JSON format.
     The JSON should conform to the following schema:
@@ -117,7 +124,11 @@ function getPrompt(ai: any) {
                   "properties": {
                     "time": { "type": "STRING" },
                     "description": { "type": "STRING" },
-                    "estimated_cost": { "type": "STRING" }
+                    "estimated_cost": { "type": "STRING" },
+                    "location": { 
+                        "type": "OBJECT",
+                        "properties": { "latitude": { "type": "NUMBER" }, "longitude": { "type": "NUMBER" } }
+                    }
                   }
                 }
               }
@@ -157,7 +168,11 @@ function getPrompt(ai: any) {
                     "type": { "type": "STRING", "description": "The type of property (e.g., Hotel, Hostel, Airbnb)." },
                     "price_per_night": { "type": "STRING", "description": "The estimated price per night." },
                     "bookingLink": { "type": "STRING", "format": "uri", "description": "An example booking link." },
-                    "details": { "type": "STRING", "description": "A short summary of the accommodation." }
+                    "details": { "type": "STRING", "description": "A short summary of the accommodation." },
+                    "location": { 
+                        "type": "OBJECT",
+                        "properties": { "latitude": { "type": "NUMBER" }, "longitude": { "type": "NUMBER" } }
+                    }
                 },
                 "required": ["name", "type", "price_per_night", "bookingLink", "details"]
             }

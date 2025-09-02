@@ -1,7 +1,13 @@
+export interface Location {
+    latitude: number;
+    longitude: number;
+}
+
 export interface Activity {
   time: string;
   description: string;
   estimated_cost: string;
+  location?: Location;
 }
 
 export interface DailyPlan {
@@ -24,6 +30,7 @@ export interface StayOption {
     price_per_night: string;
     bookingLink: string;
     details: string;
+    location?: Location;
 }
 
 export interface ItineraryData {
