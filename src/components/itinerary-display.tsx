@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { ItineraryData, TripPreferences, TravelOption, StayOption } from '@/types/trip';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Plane, Train, Bus, Wallet, List, CalendarDays, ExternalLink, Ticket, Milestone, BedDouble } from 'lucide-react';
 import { ListView } from './list-view';
 import { CalendarView } from './calendar-view';
@@ -88,7 +88,10 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
             <p className="text-2xl font-normal">
               {itineraryData.total_budget}
             </p>
-            <p className="text-xs text-muted-foreground">
+            {itineraryData.budget_notes && (
+                <CardDescription className="text-xs text-destructive pt-1">{itineraryData.budget_notes}</CardDescription>
+            )}
+            <p className="text-xs text-muted-foreground pt-1">
               For {preferences.numberOfPeople} person(s)
             </p>
           </CardContent>

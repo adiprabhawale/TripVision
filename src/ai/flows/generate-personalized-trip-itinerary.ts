@@ -41,6 +41,7 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
     })
   ),
   total_budget: z.string().describe("The calculated total budget for the trip."),
+  budget_notes: z.string().optional().describe("Notes about the budget. If the total calculated budget exceeds the user's requested budget, explain why (e.g., high travel costs, expensive accommodation choice)."),
   travel_options: z.array(z.object({
     type: z.enum(['Flight', 'Train', 'Bus', 'Connecting']),
     name: z.string().describe('The name of the travel provider and service (e.g., "United Airlines UA234", "Amtrak Northeast Regional"). For connecting travel, summarize the trip (e.g., "Flight to Layover + Train to Destination").'),
@@ -89,7 +90,7 @@ function getPrompt(ai: any) {
   
     Please provide the following:
     1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
-    2. The total estimated budget for the trip for all people.
+    2. The total estimated budget for the trip for all people. If the estimated total budget exceeds the user's specified budget, provide a brief explanation in the 'budget_notes' field.
     3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates.
     4. A list of accommodation options that fit the user's budget and stay type preference.
 
@@ -126,6 +127,10 @@ function getPrompt(ai: any) {
         "total_budget": {
            "type": "STRING",
            "description": "The calculated total budget for the trip."
+        },
+        "budget_notes": {
+          "type": "STRING",
+          "description": "Notes about the budget. If the total calculated budget exceeds the user's requested budget, explain why (e.g., high travel costs, expensive accommodation choice)."
         },
         "travel_options": {
             "type": "ARRAY",

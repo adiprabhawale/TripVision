@@ -29,6 +29,7 @@ export interface StayOption {
 export interface ItineraryData {
   itinerary: DailyPlan[];
   total_budget: string;
+  budget_notes?: string;
   travel_options: TravelOption[];
   stay_options: StayOption[];
 }
