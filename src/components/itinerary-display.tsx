@@ -28,6 +28,35 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
           An AI-crafted itinerary based on your preferences.
         </p>
       </div>
+      
+      <div>
+        <div className="flex items-center gap-2 mb-4">
+          <Button
+            variant={viewMode === 'list' ? 'default' : 'outline'}
+            onClick={() => setViewMode('list')}
+          >
+            <List className="mr-2 h-4 w-4" />
+            List View
+          </Button>
+          <Button
+            variant={viewMode === 'calendar' ? 'default' : 'outline'}
+            onClick={() => setViewMode('calendar')}
+          >
+            <CalendarDays className="mr-2 h-4 w-4" />
+            Calendar View
+          </Button>
+        </div>
+
+        {viewMode === 'list' ? (
+          <ListView itinerary={itineraryData.itinerary} />
+        ) : (
+          <CalendarView
+            itinerary={itineraryData.itinerary}
+            startDate={preferences.startDate}
+            duration={parseInt(preferences.duration)}
+          />
+        )}
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
@@ -56,35 +85,6 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
             </p>
           </CardContent>
         </Card>
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2 mb-4">
-          <Button
-            variant={viewMode === 'list' ? 'default' : 'outline'}
-            onClick={() => setViewMode('list')}
-          >
-            <List className="mr-2 h-4 w-4" />
-            List View
-          </Button>
-          <Button
-            variant={viewMode === 'calendar' ? 'default' : 'outline'}
-            onClick={() => setViewMode('calendar')}
-          >
-            <CalendarDays className="mr-2 h-4 w-4" />
-            Calendar View
-          </Button>
-        </div>
-
-        {viewMode === 'list' ? (
-          <ListView itinerary={itineraryData.itinerary} />
-        ) : (
-          <CalendarView
-            itinerary={itineraryData.itinerary}
-            startDate={preferences.startDate}
-            duration={parseInt(preferences.duration)}
-          />
-        )}
       </div>
     </div>
   );
