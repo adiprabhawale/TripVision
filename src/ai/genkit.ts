@@ -1,7 +1,10 @@
 import {genkit} from 'genkit';
 import {googleAI} from '@genkit-ai/googleai';
 
-export const ai = genkit({
-  plugins: [googleAI()],
-  model: 'googleai/gemini-2.5-flash',
-});
+export function getAi(apiKey?: string) {
+    const plugins = [googleAI({apiKey: apiKey || process.env.GEMINI_API_KEY})];
+    return genkit({
+        plugins,
+        model: 'googleai/gemini-2.5-flash',
+    });
+}

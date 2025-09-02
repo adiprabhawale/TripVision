@@ -5,7 +5,8 @@ import type { TripPreferences } from '@/types/trip';
 import { format } from 'date-fns';
 
 export async function getItinerary(
-  preferences: TripPreferences
+  preferences: TripPreferences,
+  apiKey: string
 ) {
   try {
     const validatedPreferences = {
@@ -18,7 +19,7 @@ export async function getItinerary(
         return { error: 'Please enter a valid trip duration.' };
     }
 
-    const result = await generatePersonalizedTripItinerary(validatedPreferences);
+    const result = await generatePersonalizedTripItinerary(validatedPreferences, apiKey);
     return { data: result };
   } catch (e) {
     console.error(e);
