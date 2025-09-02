@@ -10,10 +10,15 @@ export interface DailyPlan {
   activities: Activity[];
 }
 
+export interface TravelOption {
+    type: 'Flight' | 'Train' | 'Bus';
+    details: string;
+}
+
 export interface ItineraryData {
   itinerary: DailyPlan[];
   total_budget: string;
-  travel_options: string;
+  travel_options: TravelOption[];
 }
 
 export interface TripPreferences {

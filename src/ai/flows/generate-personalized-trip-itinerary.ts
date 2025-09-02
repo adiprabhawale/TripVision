@@ -40,7 +40,10 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
     })
   ),
   total_budget: z.string().describe("The calculated total budget for the trip."),
-  travel_options: z.string().describe("A summary of flight, train, and bus options for the travel dates."),
+  travel_options: z.array(z.object({
+    type: z.enum(['Flight', 'Train', 'Bus']),
+    details: z.string(),
+  })).describe("A list of flight, train, and bus options for the travel dates."),
 });
 
 export type GeneratePersonalizedTripItineraryOutput =
@@ -76,7 +79,7 @@ function getPrompt(ai: any) {
     Please provide the following:
     1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
     2. The total estimated budget for the trip for all people.
-    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates.
+    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates. For each travel option, provide a short summary of availability and price range.
 
     Provide the response in JSON format.
     The JSON should conform to the following schema:
@@ -109,8 +112,15 @@ function getPrompt(ai: any) {
            "description": "The calculated total budget for the trip."
         },
         "travel_options": {
-           "type": "STRING",
-           "description": "A summary of flight, train, and bus options for the travel dates."
+            "type": "ARRAY",
+            "description": "A list of flight, train, and bus options for the travel dates.",
+            "items": {
+                "type": "OBJECT",
+                "properties": {
+                    "type": { "type": "STRING", "enum": ["Flight", "Train", "Bus"] },
+                    "details": { "type": "STRING" }
+                }
+            }
         }
       },
       "required": ["itinerary", "total_budget", "travel_options"]
