@@ -39,7 +39,7 @@ const formSchema = z.object({
   duration: z.string().min(1, { message: 'Please enter a duration.' }),
   numberOfPeople: z.string().min(1, {message: 'Please enter number of people'}),
   budgetType: z.enum(['per-person', 'group'], { required_error: 'Please select a budget type.'}),
-  budget: z.number().min(100, { message: "Budget must be at least $100"}),
+  budget: z.number().min(100, { message: "Budget must be at least ₹100"}),
   travelType: z.string({ required_error: 'Please select a travel type.' }),
   interests: z.string().min(3, { message: 'Please list some interests.' }),
 });
@@ -246,7 +246,7 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                                 className="w-full"
                             />
                         </FormControl>
-                        <span className="font-semibold w-24 text-right">${value.toLocaleString()}</span>
+                        <span className="font-semibold w-24 text-right">₹{value.toLocaleString()}</span>
                     </div>
                     <FormMessage />
                 </FormItem>
