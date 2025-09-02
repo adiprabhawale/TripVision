@@ -59,7 +59,7 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
     name: z.string().describe("The name of the accommodation."),
     type: z.string().describe("The type of property (e.g., Hotel, Hostel, Airbnb)."),
     price_per_night: z.string().describe("The estimated price per night."),
-    bookingLink: z.string().url().describe("An example booking link to a site like Booking.com, Airbnb, or the property's website."),
+    bookingLink: z.string().url().describe("An example booking link. For Airbnb, construct a search URL like 'https://www.airbnb.com/s/DESTINATION/homes?checkin=START_DATE&checkout=END_DATE&adults=NUM_PEOPLE' where DESTINATION is url-encoded, and dates are in YYYY-MM-DD format. For others, link to a site like Booking.com or the property's website."),
     details: z.string().describe("A short summary of the accommodation, including rating or key features."),
     location: LocationSchema.optional().describe('The geographical coordinates of the accommodation.'),
   })).describe("A list of accommodation options that fit the user's budget and stay preferences."),
@@ -103,7 +103,9 @@ function getPrompt(ai: any) {
 
     For each travel option, provide the name of the carrier/service, an estimated fare, a short summary of the trip, and an example booking link (e.g., to Google Flights, Kayak, Amtrak, etc.). If a travel mode is not available, set the fare to "Unavailable" and provide a link to a general travel search engine. For trips with connections, describe the different legs in the details.
     
-    For each stay option, provide the property name, type, price per night, a short summary, a direct booking link (e.g., to Booking.com, Airbnb, etc.), and its location coordinates.
+    For each stay option, provide the property name, type, price per night, a short summary, a direct booking link, and its location coordinates.
+    - For Airbnb options, the booking link should be a search URL. Construct it like this: 'https://www.airbnb.com/s/URL_ENCODED_DESTINATION/homes?checkin=YYYY-MM-DD&checkout=YYYY-MM-DD&adults=NUMBER_OF_PEOPLE'.
+    - For other stay types like hotels or hostels, the link can be to a booking site like Booking.com or the property's own website.
 
     Provide the response in JSON format.
     The JSON should conform to the following schema:
