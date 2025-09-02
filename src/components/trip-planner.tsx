@@ -8,6 +8,9 @@ import { getItinerary } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { ApiKeyManager } from './api-key-manager';
+import { Button } from './ui/button';
+import { PanelLeftClose, PanelRightClose } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function TripPlanner() {
   const [itineraryData, setItineraryData] = useState<ItineraryData | null>(null);
@@ -16,6 +19,7 @@ export default function TripPlanner() {
   const { toast } = useToast();
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [isApiKeyChecked, setIsApiKeyChecked] = useState(false);
+  const [isFormCollapsed, setIsFormCollapsed] = useState(false);
 
   useEffect(() => {
     const storedApiKey = localStorage.getItem('gemini_api_key');
@@ -42,6 +46,7 @@ export default function TripPlanner() {
     setIsLoading(true);
     setItineraryData(null);
     setTripPrefs(preferences);
+    setIsFormCollapsed(true);
 
     const result = await getItinerary(preferences, apiKey);
 
@@ -52,6 +57,7 @@ export default function TripPlanner() {
         description: result.error,
       });
       setItineraryData(null);
+      setIsFormCollapsed(false);
     } else if (result.data) {
       setItineraryData(result.data);
     }
@@ -73,14 +79,25 @@ export default function TripPlanner() {
 
   return (
     <div className="container mx-auto px-4 md:px-6">
-      <div className="grid gap-12 lg:grid-cols-5">
-        <div className="lg:col-span-2">
+      <div className={cn("grid gap-12 transition-all duration-300", isFormCollapsed ? "lg:grid-cols-12" : "lg:grid-cols-5")}>
+        <div className={cn("transition-all duration-300", isFormCollapsed ? "lg:col-span-0 hidden" : "lg:col-span-2")}>
             <TripPreferencesForm
                 onSubmit={handleFormSubmit}
                 isLoading={isLoading}
             />
         </div>
-        <div className="lg:col-span-3">
+        <div className={cn("transition-all duration-300", isFormCollapsed ? "lg:col-span-12" : "lg:col-span-3")}>
+            {(itineraryData || isLoading) && (
+              <Button
+                variant="outline"
+                size="icon"
+                className="mb-4"
+                onClick={() => setIsFormCollapsed(!isFormCollapsed)}
+              >
+                {isFormCollapsed ? <PanelRightClose /> : <PanelLeftClose />}
+                <span className="sr-only">Toggle Form</span>
+              </Button>
+            )}
             {itineraryData && tripPrefs ? (
                 <ItineraryDisplay itineraryData={itineraryData} preferences={tripPrefs} />
             ) : (
