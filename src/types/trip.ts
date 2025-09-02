@@ -11,7 +11,10 @@ export interface DailyPlan {
 }
 
 export interface TravelOption {
-    type: 'Flight' | 'Train' | 'Bus';
+    type: 'Flight' | 'Train' | 'Bus' | 'Connecting';
+    name: string;
+    fare: string;
+    bookingLink: string;
     details: string;
 }
 

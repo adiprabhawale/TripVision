@@ -41,9 +41,12 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
   ),
   total_budget: z.string().describe("The calculated total budget for the trip."),
   travel_options: z.array(z.object({
-    type: z.enum(['Flight', 'Train', 'Bus']),
-    details: z.string(),
-  })).describe("A list of flight, train, and bus options for the travel dates."),
+    type: z.enum(['Flight', 'Train', 'Bus', 'Connecting']),
+    name: z.string().describe('The name of the travel provider and service (e.g., "United Airlines UA234", "Amtrak Northeast Regional"). For connecting travel, summarize the trip (e.g., "Flight to Layover + Train to Destination").'),
+    fare: z.string().describe('The estimated fare for this option (e.g., "$250", "Unavailable").'),
+    bookingLink: z.string().url().describe('An example booking link to a site like Google Flights, Kayak, or the provider\'s website. If unavailable, provide a link to a general search page.'),
+    details: z.string().describe('A short summary of the travel option, including duration and any layovers. For connecting travel, describe the different legs of the journey.'),
+  })).describe("A list of flight, train, and bus options for the travel dates. Provide direct booking links and fare estimates."),
 });
 
 export type GeneratePersonalizedTripItineraryOutput =
@@ -64,7 +67,6 @@ function getPrompt(ai: any) {
     prompt: `You are an expert travel planner AI assistant.
   
     Based on the user's preferences, generate a detailed trip itinerary.
-    Also, provide insights on booking considerations like travel availability and pricing.
   
     User Preferences:
     Source: {{{source}}}
@@ -79,7 +81,7 @@ function getPrompt(ai: any) {
     Please provide the following:
     1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
     2. The total estimated budget for the trip for all people.
-    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates. For each travel option, provide a short summary of availability and price range.
+    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates. For each travel option, provide the name of the carrier/service, an estimated fare, a short summary of the trip, and an example booking link (e.g., to Google Flights, Kayak, Amtrak, etc.). If a travel mode is not available, set the fare to "Unavailable" and provide a link to a general travel search engine. For trips with connections, describe the different legs in the details.
 
     Provide the response in JSON format.
     The JSON should conform to the following schema:
@@ -117,9 +119,13 @@ function getPrompt(ai: any) {
             "items": {
                 "type": "OBJECT",
                 "properties": {
-                    "type": { "type": "STRING", "enum": ["Flight", "Train", "Bus"] },
-                    "details": { "type": "STRING" }
-                }
+                    "type": { "type": "STRING", "enum": ["Flight", "Train", "Bus", "Connecting"] },
+                    "name": { "type": "STRING", "description": "The name of the travel provider and service (e.g., \\"United Airlines UA234\\", \\"Amtrak Northeast Regional\\")." },
+                    "fare": { "type": "STRING", "description": "The estimated fare for this option (e.g., \\"$250\\", \\"Unavailable\\")." },
+                    "bookingLink": { "type": "STRING", "format": "uri", "description": "An example booking link." },
+                    "details": { "type": "STRING", "description": "A short summary of the travel option, including duration and any layovers." }
+                },
+                "required": ["type", "name", "fare", "bookingLink", "details"]
             }
         }
       },
