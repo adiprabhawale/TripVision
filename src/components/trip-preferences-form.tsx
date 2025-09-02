@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, Loader2, Users, Briefcase, Handshake, Heart } from 'lucide-react';
+import { CalendarIcon, Loader2, Users, Briefcase, Handshake, Heart, BedDouble, Building, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import type { TripPreferences } from '@/types/trip';
@@ -41,6 +41,7 @@ const formSchema = z.object({
   budgetType: z.enum(['per-person', 'group'], { required_error: 'Please select a budget type.'}),
   budget: z.number().min(100, { message: "Budget must be at least ₹100"}),
   travelType: z.string({ required_error: 'Please select a travel type.' }),
+  stayType: z.string({ required_error: 'Please select a stay type.' }),
   interests: z.string().min(3, { message: 'Please list some interests.' }),
 });
 
@@ -60,6 +61,7 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
       budgetType: 'per-person',
       budget: 1500,
       travelType: 'Friends',
+      stayType: 'Hotel',
       interests: '',
     },
   });
@@ -252,6 +254,29 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                 </FormItem>
                 )}
             />
+
+             <FormField
+                control={form.control}
+                name="stayType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type of Stay</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select stay type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Hotel"><Building className="inline-block mr-2"/>Hotel</SelectItem>
+                        <SelectItem value="Hostel"><BedDouble className="inline-block mr-2"/>Hostel</SelectItem>
+                        <SelectItem value="Airbnb"><Home className="inline-block mr-2"/>Airbnb</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
             <FormField
               control={form.control}

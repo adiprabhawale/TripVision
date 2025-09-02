@@ -19,6 +19,7 @@ const GeneratePersonalizedTripItineraryInputSchema = z.object({
   budget: z.number().describe('The budget for the trip.'),
   budgetType: z.enum(['per-person', 'group']).describe('The type of budget (per person or total group).'),
   travelType: z.string().describe('The type of travel (e.g., Business, Friends, Family).'),
+  stayType: z.string().describe('The preferred type of accommodation (e.g., Hotel, Hostel, Airbnb).'),
   interests: z.string().describe('The interests of the traveler.'),
 });
 
@@ -47,6 +48,13 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
     bookingLink: z.string().url().describe('An example booking link to a site like Google Flights, Kayak, or the provider\'s website. If unavailable, provide a link to a general search page.'),
     details: z.string().describe('A short summary of the travel option, including duration and any layovers. For connecting travel, describe the different legs of the journey.'),
   })).describe("A list of flight, train, and bus options for the travel dates. Provide direct booking links and fare estimates."),
+  stay_options: z.array(z.object({
+    name: z.string().describe("The name of the accommodation."),
+    type: z.string().describe("The type of property (e.g., Hotel, Hostel, Airbnb)."),
+    price_per_night: z.string().describe("The estimated price per night."),
+    bookingLink: z.string().url().describe("An example booking link to a site like Booking.com, Airbnb, or the property's website."),
+    details: z.string().describe("A short summary of the accommodation, including rating or key features."),
+  })).describe("A list of accommodation options that fit the user's budget and stay preferences."),
 });
 
 export type GeneratePersonalizedTripItineraryOutput =
@@ -76,12 +84,18 @@ function getPrompt(ai: any) {
     Number of People: {{{numberOfPeople}}}
     Budget: {{{budget}}} (This is a {{budgetType}} budget)
     Travel Type: {{{travelType}}}
+    Stay Type: {{{stayType}}}
     Interests: {{{interests}}}
   
     Please provide the following:
     1. A detailed day-by-day itinerary. The plan should be suitable for the specified travel type.
     2. The total estimated budget for the trip for all people.
-    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates. For each travel option, provide the name of the carrier/service, an estimated fare, a short summary of the trip, and an example booking link (e.g., to Google Flights, Kayak, Amtrak, etc.). If a travel mode is not available, set the fare to "Unavailable" and provide a link to a general travel search engine. For trips with connections, describe the different legs in the details.
+    3. A summary of potential travel options (flights, trains, buses) between the source and destination for the given dates.
+    4. A list of accommodation options that fit the user's budget and stay type preference.
+
+    For each travel option, provide the name of the carrier/service, an estimated fare, a short summary of the trip, and an example booking link (e.g., to Google Flights, Kayak, Amtrak, etc.). If a travel mode is not available, set the fare to "Unavailable" and provide a link to a general travel search engine. For trips with connections, describe the different legs in the details.
+    
+    For each stay option, provide the property name, type, price per night, a short summary, and a direct booking link (e.g., to Booking.com, Airbnb, etc.).
 
     Provide the response in JSON format.
     The JSON should conform to the following schema:
@@ -127,9 +141,24 @@ function getPrompt(ai: any) {
                 },
                 "required": ["type", "name", "fare", "bookingLink", "details"]
             }
+        },
+        "stay_options": {
+            "type": "ARRAY",
+            "description": "A list of accommodation options.",
+            "items": {
+                "type": "OBJECT",
+                "properties": {
+                    "name": { "type": "STRING", "description": "The name of the accommodation." },
+                    "type": { "type": "STRING", "description": "The type of property (e.g., Hotel, Hostel, Airbnb)." },
+                    "price_per_night": { "type": "STRING", "description": "The estimated price per night." },
+                    "bookingLink": { "type": "STRING", "format": "uri", "description": "An example booking link." },
+                    "details": { "type": "STRING", "description": "A short summary of the accommodation." }
+                },
+                "required": ["name", "type", "price_per_night", "bookingLink", "details"]
+            }
         }
       },
-      "required": ["itinerary", "total_budget", "travel_options"]
+      "required": ["itinerary", "total_budget", "travel_options", "stay_options"]
     }
     Make sure the generated JSON is parsable.
     `,

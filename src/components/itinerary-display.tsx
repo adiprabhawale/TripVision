@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import type { ItineraryData, TripPreferences, TravelOption } from '@/types/trip';
+import type { ItineraryData, TripPreferences, TravelOption, StayOption } from '@/types/trip';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Plane, Train, Bus, Wallet, List, CalendarDays, ExternalLink, Ticket, Milestone } from 'lucide-react';
+import { Plane, Train, Bus, Wallet, List, CalendarDays, ExternalLink, Ticket, Milestone, BedDouble } from 'lucide-react';
 import { ListView } from './list-view';
 import { CalendarView } from './calendar-view';
 import { Separator } from './ui/separator';
@@ -31,6 +31,10 @@ const TravelOptionIcon = ({ type }: { type: TravelOption['type'] }) => {
     }
   };
 
+const StayOptionIcon = () => {
+    return <BedDouble className="h-6 w-6 text-primary" />;
+};
+
 export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDisplayProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
@@ -45,8 +49,8 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
         </p>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 mb-4">
+      <div className="space-y-8">
+        <div className="flex items-center gap-2">
           <Button
             variant={viewMode === 'list' ? 'default' : 'outline'}
             onClick={() => setViewMode('list')}
@@ -74,14 +78,14 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
         )}
       </div>
       
-      <div className="grid gap-6 md:grid-cols-5">
-        <Card className="md:col-span-2">
+      <div className="space-y-6">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">
+            <p className="text-2xl font-normal">
               {itineraryData.total_budget}
             </p>
             <p className="text-xs text-muted-foreground">
@@ -89,7 +93,8 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
             </p>
           </CardContent>
         </Card>
-        <Card className="md:col-span-3">
+        
+        <Card>
           <CardHeader>
             <CardTitle className="text-base font-semibold">Travel Options</CardTitle>
           </CardHeader>
@@ -115,6 +120,38 @@ export function ItineraryDisplay({ itineraryData, preferences }: ItineraryDispla
                           </div>
                       </div>
                       {index < itineraryData.travel_options.length - 1 && <Separator className="mt-4" />}
+                    </div>
+                ))}
+             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Stay Options</CardTitle>
+          </CardHeader>
+          <CardContent>
+             <div className="space-y-4">
+                {itineraryData.stay_options.map((option, index) => (
+                    <div key={index}>
+                      <div className="flex items-start gap-4">
+                          <StayOptionIcon />
+                          <div className="flex-1">
+                              <div className="flex justify-between items-start">
+                                  <div>
+                                      <p className="font-semibold">{option.name} <span className="text-sm font-normal text-muted-foreground">({option.type})</span></p>
+                                      <p className="text-sm text-muted-foreground">{option.details}</p>
+                                  </div>
+                                  <p className="font-semibold text-lg whitespace-nowrap pl-4">{option.price_per_night}</p>
+                              </div>
+                              <Button asChild variant="link" className="px-0 h-auto mt-1">
+                                <a href={option.bookingLink} target="_blank" rel="noopener noreferrer">
+                                  Book Now <ExternalLink className="ml-2 h-4 w-4" />
+                                </a>
+                              </Button>
+                          </div>
+                      </div>
+                      {index < itineraryData.stay_options.length - 1 && <Separator className="mt-4" />}
                     </div>
                 ))}
              </div>

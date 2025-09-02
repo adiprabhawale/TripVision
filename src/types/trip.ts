@@ -18,10 +18,19 @@ export interface TravelOption {
     details: string;
 }
 
+export interface StayOption {
+    name: string;
+    type: string;
+    price_per_night: string;
+    bookingLink: string;
+    details: string;
+}
+
 export interface ItineraryData {
   itinerary: DailyPlan[];
   total_budget: string;
   travel_options: TravelOption[];
+  stay_options: StayOption[];
 }
 
 export interface TripPreferences {
@@ -33,5 +42,6 @@ export interface TripPreferences {
     budgetType: 'per-person' | 'group';
     budget: number;
     travelType: string;
+    stayType: string;
     interests: string;
 }
