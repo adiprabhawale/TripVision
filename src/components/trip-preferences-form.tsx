@@ -59,7 +59,7 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
       duration: '7',
       numberOfPeople: '1',
       budgetType: 'per-person',
-      budget: 1500,
+      budget: 50000,
       travelType: 'Friends',
       stayType: 'Hotel',
       interests: '',
@@ -85,7 +85,7 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                   <FormItem>
                     <FormLabel>From</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., New York, USA" {...field} />
+                      <Input placeholder="e.g., New Delhi, India" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,7 +98,7 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                   <FormItem>
                     <FormLabel>To</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Paris, France" {...field} />
+                      <Input placeholder="e.g., London, UK" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -231,29 +231,48 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
               )}
             />
 
-            <Controller
-                control={form.control}
-                name="budget"
-                render={({ field: { value, onChange } }) => (
-                <FormItem>
-                    <FormLabel>Budget {budgetType === 'per-person' ? '(Per Person)' : '(Total)'}</FormLabel>
-                    <div className="flex items-center gap-4">
-                        <FormControl>
-                            <Slider
-                                min={100}
-                                max={10000}
-                                step={100}
-                                value={[value]}
-                                onValueChange={(vals) => onChange(vals[0])}
-                                className="w-full"
-                            />
-                        </FormControl>
-                        <span className="font-semibold w-24 text-right">₹{value.toLocaleString()}</span>
-                    </div>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
+            <div className="space-y-4">
+              <FormLabel>Budget {budgetType === 'per-person' ? '(Per Person)' : '(Total)'}</FormLabel>
+              <Controller
+                  control={form.control}
+                  name="budget"
+                  render={({ field: { value, onChange } }) => (
+                  <FormItem>
+                      <div className="flex flex-col gap-6">
+                          <div className="flex items-center gap-4">
+                              <FormControl>
+                                  <Slider
+                                      min={100}
+                                      max={2000000}
+                                      step={1000}
+                                      value={[value]}
+                                      onValueChange={(vals) => onChange(vals[0])}
+                                      className="w-full"
+                                  />
+                              </FormControl>
+                          </div>
+                          <div className="flex items-center justify-between gap-4">
+                              <FormControl>
+                                  <div className="relative w-full max-w-[200px]">
+                                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                                      <Input
+                                          type="number"
+                                          value={value}
+                                          onChange={(e) => onChange(Number(e.target.value))}
+                                          className="pl-7"
+                                      />
+                                  </div>
+                              </FormControl>
+                              <span className="text-xl font-bold text-primary">
+                                  ₹{value.toLocaleString()}
+                              </span>
+                          </div>
+                      </div>
+                      <FormMessage />
+                  </FormItem>
+                  )}
+              />
+            </div>
 
              <FormField
                 control={form.control}
