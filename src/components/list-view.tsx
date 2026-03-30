@@ -3,12 +3,14 @@
 import type { DailyPlan } from '@/types/trip';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Card } from './ui/card';
+import { ActivityVote } from './activity-vote';
 
 interface ListViewProps {
   itinerary: DailyPlan[];
+  tripId?: string;
 }
 
-export function ListView({ itinerary }: ListViewProps) {
+export function ListView({ itinerary, tripId }: ListViewProps) {
   return (
     <Accordion type="single" collapsible defaultValue="item-0" className="w-full space-y-2">
       {itinerary.map((day, index) => (
@@ -20,16 +22,17 @@ export function ListView({ itinerary }: ListViewProps) {
             <AccordionContent className="px-6">
               <ul className="space-y-4">
                 {day.activities.map((activity, activityIndex) => (
-                  <li key={activityIndex} className="flex gap-4">
+                  <li key={activity.id || activityIndex} className="flex gap-4">
                     <div className="flex flex-col items-center">
                       <div className="font-semibold text-sm w-20 text-center">{activity.time}</div>
                       <div className="flex-grow w-px bg-border my-1"></div>
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="font-medium">{activity.description}</p>
                       <p className="text-sm text-muted-foreground">
                         Est. Cost: {activity.estimated_cost}
                       </p>
+                      {tripId && <ActivityVote tripId={tripId} activityId={activity.id} />}
                     </div>
                   </li>
                 ))}
