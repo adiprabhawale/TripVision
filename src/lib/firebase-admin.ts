@@ -1,52 +1,47 @@
 // src/lib/firebase-admin.ts
+import * as admin from 'firebase-admin';
 import type { Auth } from 'firebase-admin/auth';
 import type { Firestore } from 'firebase-admin/firestore';
 
 /**
- * Unified Firebase Admin Safe-Loader
+ * Standard Firebase Admin Loader for Next.js 15
  * 
- * We use eval('require') to bypass Next.js 15 / Turbopack instrumentation
- * which is known to cause prototype-related crashes (Getters/Setters) 
- * during development HMR.
+ * We use a standard import because 'firebase-admin' is listed in 
+ * 'serverExternalPackages' in next.config.ts. This ensures it is 
+ * correctly traced for production on Vercel while avoiding 
+ * prototype-related HMR crashes in development.
  */
-const getAdmin = () => {
+if (!admin.apps.length) {
   try {
-    return eval('require')('firebase-admin');
-  } catch (e) {
-    console.error('Failed to load firebase-admin. Ensure it is in package.json.');
-    throw e;
-  }
-};
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-let app: any;
+    if (!projectId || !clientEmail || !privateKey) {
+      console.warn('Firebase Admin credentials missing. Admin SDK may not function correctly.');
+    }
 
-const getApp = () => {
-  const admin = getAdmin();
-  if (admin.apps.length === 0) {
-    const serviceAccount = {
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    };
-
-    app = admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
+      databaseURL: `https://${projectId}.firebaseio.com`,
     });
-  } else {
-    app = admin.apps[0];
+  } catch (error) {
+    console.error('Error initializing Firebase Admin SDK:', error);
   }
-  return app;
-};
+}
 
 export const getAdminAuth = async (): Promise<Auth> => {
-  return getAdmin().auth(getApp());
+  return admin.auth();
 };
 
 export const getAdminDb = async (): Promise<Firestore> => {
-  return getAdmin().firestore(getApp());
+  return admin.firestore();
 };
 
 export const getFieldValue = async () => {
-  return getAdmin().firestore.FieldValue;
+  return admin.firestore.FieldValue;
 };
