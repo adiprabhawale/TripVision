@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, Loader2, Users, Briefcase, Handshake, Heart, BedDouble, Building, Home } from 'lucide-react';
+import { CalendarIcon, Loader2, Users, Briefcase, Handshake, Heart, BedDouble, Building, Home, MapPin, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import type { TripPreferences } from '@/types/trip';
@@ -69,23 +69,22 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
   const budgetType = form.watch('budgetType');
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Plan Your Next Adventure</CardTitle>
-        <CardDescription>Fill in your preferences and let AI do the planning.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Card className="border-none bg-transparent shadow-none">
+      <CardContent className="p-6 pt-2 space-y-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <div className="space-y-4">
               <FormField
                 control={form.control}
                 name="source"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>From</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Origin</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., New Delhi, India" {...field} />
+                      <div className="relative group">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50 group-focus-within:text-primary transition-colors" />
+                        <Input placeholder="Delhi, India" className="pl-10 bg-background/50 border-border/40 focus:border-primary/50 rounded-xl h-12 transition-all" {...field} />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,9 +95,12 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                 name="destination"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>To</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Destination</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., London, UK" {...field} />
+                      <div className="relative group">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50 group-focus-within:text-primary transition-colors" />
+                        <Input placeholder="London, UK" className="pl-10 bg-background/50 border-border/40 focus:border-primary/50 rounded-xl h-12 transition-all" {...field} />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -106,29 +108,25 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
                <FormField
                 control={form.control}
                 name="startDate"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col pt-2">
-                     <FormLabel className="pb-1">Start Date</FormLabel>
+                  <FormItem className="flex flex-col">
+                     <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70 mb-2">Depart</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
                             variant={'outline'}
                             className={cn(
-                              'w-full justify-start text-left font-normal whitespace-normal',
+                              'w-full justify-start text-left font-medium h-12 bg-background/50 border-border/40 rounded-xl px-3',
                               !field.value && 'text-muted-foreground'
                             )}
                           >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? (
-                              format(field.value, 'PPP')
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
+                            <CalendarIcon className="mr-2 h-4 w-4 text-primary/70" />
+                            {field.value ? format(field.value, 'MMM dd') : <span>Pick date</span>}
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -151,9 +149,9 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                 name="duration"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Duration (days)</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Days</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="e.g., 7" {...field} />
+                      <Input type="number" className="bg-background/50 border-border/40 focus:border-primary/50 rounded-xl h-12" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,15 +159,15 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
               />
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField
+            <div className="grid grid-cols-2 gap-4">
+                 <FormField
                 control={form.control}
                 name="numberOfPeople"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Number of People</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">People</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="e.g., 2" {...field} />
+                      <Input type="number" className="bg-background/50 border-border/40 focus:border-primary/50 rounded-xl h-12" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -180,18 +178,18 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                 name="travelType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type of Travel</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Vibe</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select travel type" />
+                        <SelectTrigger className="bg-background/50 border-border/40 rounded-xl h-12">
+                          <SelectValue placeholder="Friends" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Business"><Briefcase className="inline-block mr-2"/>Business</SelectItem>
-                        <SelectItem value="Friends"><Users className="inline-block mr-2"/>Friends</SelectItem>
-                        <SelectItem value="Family"><Heart className="inline-block mr-2"/>Family</SelectItem>
-                        <SelectItem value="Combined"><Handshake className="inline-block mr-2"/>Combined</SelectItem>
+                        <SelectItem value="Business">Business</SelectItem>
+                        <SelectItem value="Friends">Friends</SelectItem>
+                        <SelectItem value="Family">Family</SelectItem>
+                        <SelectItem value="Combined">Combined</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -200,76 +198,44 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="budgetType"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Budget Type</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex space-x-4"
-                    >
-                      <FormItem className="flex items-center space-x-2">
-                        <FormControl>
-                          <RadioGroupItem value="per-person" id="per-person" />
-                        </FormControl>
-                        <Label htmlFor="per-person" className="font-normal">Per Person</Label>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-2">
-                        <FormControl>
-                          <RadioGroupItem value="group" id="group" />
-                        </FormControl>
-                        <Label htmlFor="group" className="font-normal">Total Group</Label>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className="space-y-4">
-              <FormLabel>Budget {budgetType === 'per-person' ? '(Per Person)' : '(Total)'}</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Budget (INR)</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="budget"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          className="w-24 h-8 bg-background/30 border-border/20 text-xs font-bold text-right pr-2 rounded-lg focus:border-primary/40 focus:ring-0 transition-all"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
               <Controller
                   control={form.control}
                   name="budget"
                   render={({ field: { value, onChange } }) => (
-                  <FormItem>
-                      <div className="flex flex-col gap-6">
-                          <div className="flex items-center gap-4">
-                              <FormControl>
-                                  <Slider
-                                      min={100}
-                                      max={2000000}
-                                      step={1000}
-                                      value={[value]}
-                                      onValueChange={(vals) => onChange(vals[0])}
-                                      className="w-full"
-                                  />
-                              </FormControl>
-                          </div>
-                          <div className="flex items-center justify-between gap-4">
-                              <FormControl>
-                                  <div className="relative w-full max-w-[200px]">
-                                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
-                                      <Input
-                                          type="number"
-                                          value={value}
-                                          onChange={(e) => onChange(Number(e.target.value))}
-                                          className="pl-7"
-                                      />
-                                  </div>
-                              </FormControl>
-                              <span className="text-xl font-bold text-primary">
-                                  ₹{value.toLocaleString()}
-                              </span>
-                          </div>
+                    <div className="px-1">
+                      <Slider
+                          min={1000}
+                          max={500000}
+                          step={1000}
+                          value={[value]}
+                          onValueChange={(vals) => onChange(vals[0])}
+                          className="py-2"
+                      />
+                      <div className="flex justify-between mt-2 text-[8px] font-bold uppercase tracking-widest text-muted-foreground/40">
+                        <span>Min ₹1k</span>
+                        <span>Max ₹500k</span>
                       </div>
-                      <FormMessage />
-                  </FormItem>
+                    </div>
                   )}
               />
             </div>
@@ -279,17 +245,17 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
                 name="stayType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type of Stay</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Stay</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select stay type" />
+                        <SelectTrigger className="bg-background/50 border-border/40 rounded-xl h-12">
+                          <SelectValue placeholder="Hotel" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Hotel"><Building className="inline-block mr-2"/>Hotel</SelectItem>
-                        <SelectItem value="Hostel"><BedDouble className="inline-block mr-2"/>Hostel</SelectItem>
-                        <SelectItem value="Airbnb"><Home className="inline-block mr-2"/>Airbnb</SelectItem>
+                        <SelectItem value="Hotel">Hotel</SelectItem>
+                        <SelectItem value="Hostel">Hostel</SelectItem>
+                        <SelectItem value="Airbnb">Airbnb</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -302,25 +268,27 @@ export function TripPreferencesForm({ onSubmit, isLoading }: TripPreferencesForm
               name="interests"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Interests &amp; Activities</FormLabel>
+                  <FormLabel className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/70">Interests</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., museums, hiking, local cuisine" {...field} />
+                    <Input placeholder="Culture, Food, Museums..." className="bg-background/50 border-border/40 focus:border-primary/50 rounded-xl h-12" {...field} />
                   </FormControl>
-                   <FormDescription>
-                    Separate interests with commas.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading} className="w-full bg-accent hover:bg-accent/90">
+            
+            <Button 
+                type="submit" 
+                disabled={isLoading} 
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 group transition-all duration-300 active:scale-95"
+            >
               {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
+                <Loader2 className="w-6 h-6 animate-spin" />
               ) : (
-                'Generate Itinerary'
+                <span className="flex items-center gap-2">
+                    Generate Itinerary
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               )}
             </Button>
           </form>

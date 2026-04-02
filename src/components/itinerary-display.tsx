@@ -6,13 +6,13 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { 
   Plane, Train, Bus, Wallet, List, Map, ExternalLink, Ticket, Milestone, 
-  BedDouble, Download, Calendar, Clock, Coins 
+  BedDouble, Download, Calendar, Clock, Coins, Globe, MapPin, ChevronRight
 } from 'lucide-react';
 import { ListView } from './list-view';
 import { MapView } from './map-view';
 import { Separator } from './ui/separator';
 import { exportToPDF } from '@/lib/pdf-export';
-import { toast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 interface ItineraryDisplayProps {
   itineraryData: ItineraryData;
@@ -44,54 +44,63 @@ const StayOptionIcon = () => {
 export function ItineraryDisplay({ itineraryData, preferences, tripId }: ItineraryDisplayProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
-
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline">
-            Your Trip from {preferences.source} to {preferences.destination}
+    <div className="space-y-12 pb-10 max-w-5xl mx-auto">
+      {/* Compact Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/5 pb-10">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-[0.3em] bg-primary/5 border border-primary/10 rounded-full py-1 px-3 w-fit">
+             <Globe className="w-3 h-3" />
+             AI CRAFTED JOURNEY
+          </div>
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline leading-none">
+             <span className="text-primary/40 italic font-light block text-2xl mb-2 font-body tracking-normal">Journey to</span>
+             {preferences.destination}
           </h2>
-          <p className="mt-2 text-lg text-muted-foreground">
-            An AI-crafted itinerary based on your preferences.
+          <p className="text-sm text-muted-foreground font-medium max-w-md">
+            Your bespoke adventure from <span className="text-foreground italic">{preferences.source}</span> is refined and ready.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        
+        <div className="flex items-center gap-3">
             <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex items-center gap-2"
+                className="h-11 px-5 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 transition-all font-bold text-[10px] uppercase tracking-widest gap-2"
                 onClick={() => exportToPDF(itineraryData, preferences)}
             >
-                <Download className="h-4 w-4" />
-                <span className="hidden sm:inline">Download PDF</span>
+                <Download className="h-4 w-4 text-primary" />
+                PDF
             </Button>
-            <Separator orientation="vertical" className="h-8 mx-1 hidden sm:block" />
-            <div className="flex bg-muted p-1 rounded-lg">
+            
+            <div className="flex bg-card/60 backdrop-blur-xl p-1 rounded-xl border border-white/5 shadow-xl">
                 <Button
                     variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('list')}
-                    className="flex items-center gap-2 px-3"
+                    className={cn(
+                      "h-9 px-4 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all duration-300",
+                      viewMode === 'list' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"
+                    )}
                 >
-                    <List className="h-4 w-4" />
-                    List
+                    Timeline
                 </Button>
                 <Button
                     variant={viewMode === 'map' ? 'secondary' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('map')}
-                    className="flex items-center gap-2 px-3"
+                    className={cn(
+                      "h-9 px-4 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all duration-300",
+                      viewMode === 'map' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"
+                    )}
                 >
-                    <Map className="h-4 w-4" />
                     Map
                 </Button>
             </div>
         </div>
       </div>
 
-      <div className="space-y-8">
-
+      <div className="transition-all duration-700 min-h-[50vh]">
         {viewMode === 'list' ? (
           <ListView itinerary={itineraryData.itinerary} tripId={tripId} />
         ) : (
@@ -100,90 +109,6 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
             stayOptions={itineraryData.stay_options}
           />
         )}
-      </div>
-      
-      <div className="space-y-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-normal">
-              {itineraryData.total_budget}
-            </p>
-            {itineraryData.budget_notes && (
-                <CardDescription className="text-xs text-destructive pt-1">{itineraryData.budget_notes}</CardDescription>
-            )}
-            <p className="text-xs text-muted-foreground pt-1">
-              For {preferences.numberOfPeople} person(s)
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base font-semibold">Travel Options</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <div className="space-y-4">
-                {itineraryData.travel_options.map((option, index) => (
-                    <div key={index}>
-                      <div className="flex items-start gap-4">
-                          <TravelOptionIcon type={option.type} />
-                          <div className="flex-1">
-                              <div className="flex justify-between items-start">
-                                  <div>
-                                      <p className="font-semibold">{option.name}</p>
-                                      <p className="text-sm text-muted-foreground">{option.details}</p>
-                                  </div>
-                                  <p className="font-semibold text-lg whitespace-nowrap pl-4">{option.fare}</p>
-                              </div>
-                              <Button asChild variant="link" className="px-0 h-auto mt-1">
-                                <a href={option.bookingLink} target="_blank" rel="noopener noreferrer">
-                                  Book Now <ExternalLink className="ml-2 h-4 w-4" />
-                                </a>
-                              </Button>
-                          </div>
-                      </div>
-                      {index < itineraryData.travel_options.length - 1 && <Separator className="mt-4" />}
-                    </div>
-                ))}
-             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base font-semibold">Stay Options</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <div className="space-y-4">
-                {itineraryData.stay_options.map((option, index) => (
-                    <div key={index}>
-                      <div className="flex items-start gap-4">
-                          <StayOptionIcon />
-                          <div className="flex-1">
-                              <div className="flex justify-between items-start">
-                                  <div>
-                                      <p className="font-semibold">{option.name} <span className="text-sm font-normal text-muted-foreground">({option.type})</span></p>
-                                      <p className="text-sm text-muted-foreground">{option.details}</p>
-                                  </div>
-                                  <p className="font-semibold text-lg whitespace-nowrap pl-4">{option.price_per_night}</p>
-                              </div>
-                              <Button asChild variant="link" className="px-0 h-auto mt-1">
-                                <a href={option.bookingLink} target="_blank" rel="noopener noreferrer">
-                                  Book Now <ExternalLink className="ml-2 h-4 w-4" />
-                                </a>
-                              </Button>
-                          </div>
-                      </div>
-                      {index < itineraryData.stay_options.length - 1 && <Separator className="mt-4" />}
-                    </div>
-                ))}
-             </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

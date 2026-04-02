@@ -8,12 +8,15 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from './ui/button';
 import { MapPin, Calendar, ArrowRight, PlaneTakeoff, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export function TripDashboard() {
   const [trips, setTrips] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
   const { user, getIdToken } = useAuth();
   const router = useRouter();
+
 
   useEffect(() => {
     async function fetchTrips() {
@@ -34,6 +37,11 @@ export function TripDashboard() {
     }
     fetchTrips();
   }, [user, getIdToken]);
+
+  const handleViewItinerary = (tripId: string) => {
+    setLoadingTripId(tripId);
+    router.push(`/trip/${tripId}`);
+  };
 
   if (isLoading) {
     return (
@@ -57,40 +65,65 @@ export function TripDashboard() {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2">
-      {trips.map((trip) => (
-        <Card key={trip.id} className="group hover:shadow-lg transition-all duration-300 border-primary/10 overflow-hidden">
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <CardTitle className="flex items-center gap-2 group-hover:text-primary transition-colors">
-                  <MapPin className="h-4 w-4 text-primary" />
+    <div className="flex flex-col gap-6">
+      {trips.map((trip) => {
+        return (
+          <Card 
+            key={trip.id} 
+            className="group relative border-border/40 bg-card/10 backdrop-blur-3xl hover:border-primary/40 transition-all duration-700 overflow-hidden rounded-[2rem] flex flex-col h-auto"
+          >
+            {/* Subtle Hover Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent transition-all duration-700 group-hover:from-primary/10 group-hover:to-secondary/5" />
+            
+            <CardHeader className="relative z-10 p-6 pb-2">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                   <div className="flex gap-1.5">
+                      <span className="text-[8px] uppercase tracking-[0.2em] font-black px-1.5 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded">Trip</span>
+                      <span className="text-[8px] uppercase tracking-[0.2em] font-black px-1.5 py-0.5 bg-white/5 text-muted-foreground border border-white/5 rounded italic">Planned</span>
+                   </div>
+                   <div className="flex items-center gap-1.5 text-muted-foreground/50 font-black text-[9px] uppercase tracking-tighter">
+                     <Calendar className="h-2.5 w-2.5" />
+                     {trip.startDate ? format(new Date(trip.startDate), 'MMM dd') : 'Soon'}
+                   </div>
+                </div>
+                <CardTitle className="font-headline font-bold text-xl leading-tight group-hover:text-primary transition-colors duration-500">
                   {trip.destination}
                 </CardTitle>
-                <CardDescription className="flex items-center gap-2">
-                  <Calendar className="h-3 w-3" />
-                  {trip.startDate ? format(new Date(trip.startDate), 'MMM do, yyyy') : 'No date set'}
-                </CardDescription>
               </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-4">
-            <div className="text-sm text-muted-foreground">
-                {trip.duration} Day Adventure
-            </div>
-          </CardContent>
-          <CardFooter className="bg-primary/5 pt-3">
-            <Button 
-                onClick={() => router.push(`/trip/${trip.id}`)}
-                className="w-full group" 
-                variant="ghost"
-            >
-              View Itinerary
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+            </CardHeader>
+            
+            <CardContent className="relative z-10 px-6 pb-4">
+               <p className="text-[10px] text-foreground/40 leading-relaxed font-bold uppercase tracking-widest">
+                 {trip.duration} Days • {trip.source || 'Your Space'}
+               </p>
+            </CardContent>
+            
+            <CardFooter className="relative z-10 px-6 pb-6">
+              <Button 
+                  onClick={() => handleViewItinerary(trip.id)}
+                  disabled={loadingTripId === trip.id}
+                  className="w-full h-11 rounded-xl font-bold uppercase tracking-widest text-[9px] bg-white/5 border border-white/5 hover:bg-primary hover:text-white transition-all duration-500 h-11"
+                  variant="ghost"
+              >
+                {loadingTripId === trip.id ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Enter Hub
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                  </span>
+                )}
+              </Button>
+            </CardFooter>
+
+            {/* Subtle Gradient Spot */}
+            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          </Card>
+        );
+      })}
     </div>
   );
 }
+
+

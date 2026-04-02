@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wanderlust Journal - The Voyager Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-fixed-dim": "#ffb781",
+            "surface-container-highest": "#31353a",
+            "secondary": "#ffb781",
+            "on-surface-variant": "#bfc7d1",
+            "inverse-primary": "#006399",
+            "on-secondary-fixed-variant": "#703800",
+            "on-primary-container": "#f3f7ff",
+            "surface": "#101418",
+            "surface-bright": "#36393e",
+            "tertiary-container": "#417d61",
+            "tertiary": "#95d4b3",
+            "surface-container-high": "#272a2f",
+            "on-primary": "#003352",
+            "on-background": "#e0e2e8",
+            "primary": "#94ccff",
+            "on-secondary": "#4e2500",
+            "inverse-surface": "#e0e2e8",
+            "surface-dim": "#101418",
+            "on-tertiary": "#003824",
+            "on-tertiary-container": "#dfffeb",
+            "tertiary-fixed-dim": "#95d4b3",
+            "surface-tint": "#94ccff",
+            "surface-container-lowest": "#0b0f12",
+            "inverse-on-surface": "#2d3135",
+            "secondary-container": "#f98400",
+            "secondary-fixed": "#ffdcc4",
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "on-primary-fixed-variant": "#004b74",
+            "surface-container-low": "#181c20",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed": "#b1f0ce",
+            "on-primary-fixed": "#001d32",
+            "on-secondary-container": "#5c2d00",
+            "background": "#101418",
+            "surface-variant": "#31353a",
+            "on-tertiary-fixed-variant": "#0e5138",
+            "on-secondary-fixed": "#301400",
+            "surface-container": "#1c2024",
+            "on-surface": "#e0e2e8",
+            "primary-fixed-dim": "#94ccff",
+            "outline": "#8a919b",
+            "outline-variant": "#404850",
+            "on-tertiary-fixed": "#002114",
+            "primary-fixed": "#cde5ff",
+            "primary-container": "#0077b6",
+            "error": "#ffb4ab"
+          },
+          fontFamily: {
+            "headline": ["Newsreader", "serif"],
+            "body": ["Plus Jakarta Sans", "sans-serif"],
+            "label": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1.5rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .serif-italic { font-family: 'Newsreader', serif; font-style: italic; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .glass-nav { background: rgba(16, 20, 24, 0.7); backdrop-filter: blur(24px); }
+  </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary/30 min-h-screen">
+<!-- Main Layout Shell -->
+<div class="flex min-h-screen relative">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen sticky top-0 left-0 pt-8 pb-4 w-64 bg-slate-950 border-r border-slate-800/30 shrink-0">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-serif text-sky-400">The Voyager</h1>
+<p class="text-xs text-slate-500 font-medium tracking-wider uppercase mt-1">Premium Curator</p>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 bg-sky-900/20 text-sky-400 rounded-xl px-4 py-3 font-bold transition-all translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label">Plan New Trip</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 px-4 py-3 hover:text-slate-300 hover:bg-slate-900/80 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label">My Adventures</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-2 border-t border-slate-800/30 pt-4">
+<button class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-semibold mb-6 shadow-xl shadow-primary/10">
+          Create New Memory
+        </button>
+<a class="flex items-center gap-3 text-slate-500 px-4 py-3 hover:text-slate-300 hover:bg-slate-900/80 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 px-4 py-3 hover:text-slate-300 hover:bg-slate-900/80 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-label">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 relative pb-24 md:pb-12">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-900/70 backdrop-blur-xl flex justify-between items-center px-6 py-4 mx-auto shadow-xl shadow-sky-950/20 md:pr-72 lg:pr-80 xl:pr-[calc(16rem+1.5rem)]">
+<div class="flex items-center gap-4">
+<div class="md:hidden text-sky-400">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</div>
+<span class="text-2xl font-serif italic text-sky-400 dark:text-sky-300">Wanderlust Journal</span>
+</div>
+<div class="hidden md:flex items-center bg-slate-800/50 rounded-full px-4 py-2 w-96 max-w-md">
+<span class="material-symbols-outlined text-slate-400 mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-on-surface focus:ring-0 text-sm w-full" placeholder="Search destinations..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined" data-icon="group_add">group_add</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border-2 border-sky-400">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="professional headshot of a person with friendly expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUl6Sa5WvoUs7Hl6sQ3vuutOCSdJR7f5--r8IFoNLwawPu4nRbK5IiAgFP5ZDFiMLjEVT0qjMCIKMyprhCzdTtMz8khEcNJITGvldoID3xTrvT45TOjVqzzpZjuvVakPi-kaaHiiJNJgra4Ra_fLmIbrsnUmPMzkLYBJwm9l44rM4NwplwTpVE-EhpQ-TSoYgsdvuPLVcMcWVDra_Y0-a3xaeojo79I3xBean7CPE_SST7_L2maQY8fChnFos2BeY0oYPvS5lplnM"/>
+</div>
+</div>
+</header>
+<div class="pt-24 px-6 md:px-10 lg:px-16 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-12">
+<h2 class="text-5xl md:text-6xl font-headline italic text-on-surface mb-4 leading-tight">Plan Your Adventure</h2>
+<p class="text-on-surface-variant max-w-2xl text-lg">Every journey begins with a single thought. Capture your aspirations and transform them into unforgettable memories.</p>
+</div>
+<!-- Layout Grid: Form (Left) & Inspirational Cards (Right) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Column 1: The Planning Form (Active View) -->
+<div class="lg:col-span-7 space-y-10">
+<section class="bg-surface-container-low rounded-2xl p-8 shadow-sm">
+<div class="flex items-center justify-between mb-8 border-b border-outline-variant/10 pb-4">
+<h3 class="text-xl font-headline italic flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+                  Itinerary Details
+                </h3>
+<span class="text-label-md text-secondary-fixed-dim bg-secondary/10 px-3 py-1 rounded-full text-xs font-bold">DRAFT 01</span>
+</div>
+<form class="space-y-8">
+<!-- Destinations -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">FROM</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl" data-icon="location_on">location_on</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3.5 pl-12 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface" placeholder="Origin City" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">TO</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary text-xl" data-icon="flight_takeoff">flight_takeoff</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3.5 pl-12 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface" placeholder="Destination" type="text"/>
+</div>
+</div>
+</div>
+<!-- Date & Duration -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">START DATE</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-tertiary text-xl" data-icon="calendar_today">calendar_today</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3.5 pl-12 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface appearance-none" type="date"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">DURATION (DAYS)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl" data-icon="schedule">schedule</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3.5 pl-12 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface" placeholder="7" type="number"/>
+</div>
+</div>
+</div>
+<!-- Travelers & Type -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">NUMBER OF PEOPLE</label>
+<div class="flex items-center gap-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl p-1">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-variant transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<span class="flex-1 text-center font-bold">2</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-variant transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">TYPE OF TRAVEL</label>
+<div class="flex justify-between gap-2">
+<button class="flex-1 py-3 rounded-xl border border-outline-variant/15 hover:border-primary/50 flex flex-col items-center gap-1 transition-all group active:scale-95" type="button">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="person">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Solo</span>
+</button>
+<button class="flex-1 py-3 rounded-xl bg-primary/10 border border-primary/40 flex flex-col items-center gap-1 transition-all group active:scale-95" type="button">
+<span class="material-symbols-outlined text-primary" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-[10px] font-bold uppercase tracking-tight text-primary">Couple</span>
+</button>
+<button class="flex-1 py-3 rounded-xl border border-outline-variant/15 hover:border-primary/50 flex flex-col items-center gap-1 transition-all group active:scale-95" type="button">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="groups">groups</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Friends</span>
+</button>
+<button class="flex-1 py-3 rounded-xl border border-outline-variant/15 hover:border-primary/50 flex flex-col items-center gap-1 transition-all group active:scale-95" type="button">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="family_restroom">family_restroom</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Family</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Budget -->
+<div class="space-y-4 pt-4">
+<div class="flex justify-between items-end">
+<div>
+<label class="block text-sm font-semibold text-on-surface-variant ml-1 mb-2">BUDGET TYPE</label>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-full text-xs font-bold uppercase border border-primary text-primary bg-primary/5" type="button">Per Person</button>
+<button class="px-4 py-2 rounded-full text-xs font-bold uppercase border border-outline-variant text-on-surface-variant" type="button">Total Group</button>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xs text-on-surface-variant uppercase font-bold tracking-widest">EST. TOTAL</span>
+<p class="text-2xl font-headline italic text-on-surface">$3,500 - $4,200</p>
+</div>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+<!-- Stay & Interests -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">TYPE OF STAY</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary text-on-surface">
+<option>Boutique Hotel</option>
+<option>Luxury Resort</option>
+<option>Villas &amp; Estates</option>
+<option>Authentic Ryokan</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant ml-1">INTERESTS &amp; ACTIVITIES</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-semibold hover:bg-tertiary/20 hover:text-tertiary transition-all" type="button">Culinary</button>
+<button class="px-3 py-1.5 rounded-full bg-tertiary/20 text-tertiary border border-tertiary/30 text-xs font-semibold" type="button">Photography</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-semibold hover:bg-tertiary/20 hover:text-tertiary transition-all" type="button">Outdoors</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-semibold hover:bg-tertiary/20 hover:text-tertiary transition-all" type="button">History</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-semibold hover:bg-tertiary/20 hover:text-tertiary transition-all" type="button">Fashion</button>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-5 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all flex items-center justify-center gap-3" type="button">
+<span class="material-symbols-outlined" data-icon="auto_fix_high">auto_fix_high</span>
+                  Generate Itinerary
+                </button>
+</form>
+</section>
+</div>
+<!-- Column 2: My Adventures (Secondary View Context) -->
+<div class="lg:col-span-5 space-y-8">
+<div class="flex items-center justify-between">
+<h3 class="text-2xl font-headline italic">Recent Adventures</h3>
+<a class="text-primary text-sm font-bold flex items-center gap-1 hover:underline" href="#">
+                View all
+                <span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Bento-style Card Grid -->
+<div class="space-y-6">
+<!-- London Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-surface-container-low transition-all hover:-translate-y-1">
+<div class="aspect-[16/7] overflow-hidden">
+<img alt="London iconic view" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="stunning low angle shot of Big Ben and the Houses of Parliament in London during the blue hour with glowing city lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhSs_78VhZCGQk0TZu4FaHKWpIjnK5V3HcDqQCKnwj-Vun88IAJwt5iRwbdiqNHDPX-in71rtf-mFfEOWCdYAk88nT7H1N1nQjCTD_i0GjNJNOU3vLcNOM8P96i3559V0bKapVGy3TnefNwlYeFVpavsiiawQ3LALQ4cuBap42ZKNdobC-6tM2LMTuBce0aMlBHnx5SrM02R2hieSNiYOCfTXpWc50jk0mu_YiSxLYQJ9iOeqzk6yM4gBfi3tJTAITKU1YVfLWqfM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-80"></div>
+</div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-secondary-fixed-dim bg-secondary/20 px-2 py-0.5 rounded mb-2 inline-block">COMPLETED</span>
+<h4 class="text-2xl font-headline italic leading-none">London</h4>
+<p class="text-sm text-on-surface-variant mt-1">September 2023 • 5 Days</p>
+</div>
+<button class="bg-surface-bright/50 backdrop-blur-md p-2 rounded-xl text-on-surface hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Edinburgh Card (Featured Asymmetry) -->
+<div class="group grid grid-cols-2 gap-4 rounded-2xl bg-surface-container-low p-4 transition-all hover:-translate-y-1">
+<div class="aspect-square overflow-hidden rounded-xl">
+<img alt="Edinburgh scenery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="dramatic view of Edinburgh Castle perched on a cliff under a moody Scottish sky with soft golden light hitting the stone walls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWQLys9L_1yuwyAZZGXFo9R9Lb4vqw2qN0tUcgRmFXeKvlLpwDWL68SEYkwshldIhUowaSsH0goIPdmcp_7LQ3LHdXm4LDhLKK9Tzsn-MlUM_AkQKTxEIvz9gnKRm5fFa_tJNqXPfTD-nFlVBlCdKMGuWnqvkYH5S6gvwAsZZRvMsSUuaZXr-7zHzuxWzu-1Ev3IPJpqWRvYvCzU-nSmctn9o-AflSPqeTbs9USDu-gAhC2AavYYKOJ0JsznCik3JwvEprcsmN0_w"/>
+</div>
+<div class="flex flex-col justify-center pr-4">
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary bg-tertiary/10 px-2 py-0.5 rounded self-start mb-3">UPCOMING</span>
+<h4 class="text-xl font-headline italic mb-1">Edinburgh</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Planning the Highland escape with local tastings and castle tours.</p>
+<div class="mt-4 flex -space-x-2">
+<div class="h-6 w-6 rounded-full border border-surface bg-slate-400 overflow-hidden"><img alt="collaborator" data-alt="portrait of a smiling woman in warm outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9uctaxnSmC_8BQ_iCKTMB63qEqCQA7YKBKLpRDcffW3CW_Is2xJAX52szMIn7j4kqG6hS40WmarU3I18hdDoZxiXfv57gMNI63r8zSGGWXSlrTBBkh1S7DzbXsCaqGa0MpmUJiStVKL03D4VRx-bcAa2NsH0IwXxmI2uV21KfL0WdIdRGpKhx8Y7kpyi93GKVVJPa3-FZJXhfpIdQxQ4C4wYUm2h0pABwwA8vcgDv-2mPfTS2poCJDrBF4Yz_GmE1uEvU0b-ofqc"/></div>
+<div class="h-6 w-6 rounded-full border border-surface bg-slate-500 overflow-hidden"><img alt="collaborator" data-alt="portrait of a man with spectacles in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg7LMGDy3DGffJzRl4uMO7zVJmyx_lKIhXUO2eRq7gzQFxNzqmyXPgV4Gmpl6LtNlLr9c4enk3Wlc-63pUbE9yLT4HorEa9xo2FXsxNezVEPNOtBDLPG-8m65mLW7nULVL7Px1TBklL_S75-A8wCIRPWwyHUro6t6ZFzV-Fn6rZL_7CfyZmJX8SbDfby1gEoXa0Xpw-8hXSj-_yDp3-L2JLQJWDCP9z0jcVyd6d-HtoBmJ80ZxrisWZgj9Tb_KJ1aWxewxge-hyRo"/></div>
+<div class="h-6 w-6 rounded-full border border-surface bg-surface-bright flex items-center justify-center text-[8px] font-bold text-on-surface">+1</div>
+</div>
+</div>
+</div>
+<!-- Manchester Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-surface-container-low transition-all hover:-translate-y-1">
+<div class="flex gap-4 p-4">
+<div class="w-20 h-20 overflow-hidden rounded-xl shrink-0">
+<img alt="Manchester industrial beauty" class="w-full h-full object-cover" data-alt="modern glass architecture of Manchester city center reflecting a vibrant sunset sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnxHtOXDoXvylKwHe2AtxdRiykeQBG6tlO_Talkj71GbNSBfFKDOHISswtkYwTURqU6EVgortPKjReZxURup3z4m9nvbkn-XWvx3m0b9l_gs4-aLfsPhin_q413MitkM4_BqO0xXaOIi6L3AgBjs6zajJX_6xpRNU6W69wzAQehMTHWgPN3-t2ruNRjwnehM-ZrDboR52jK9_MhyjX3GN2BnVygK-B_VKNJYseFdKxB1cKgvps4iAFQPEEWaJIWZ_dqP-_DkVFbqU"/>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex justify-between">
+<h4 class="text-lg font-headline italic">Manchester</h4>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="more_vert">more_vert</span>
+</div>
+<p class="text-xs text-on-surface-variant">Archived • Nov 2022</p>
+</div>
+</div>
+</div>
+<!-- Inspiration Quote / Card -->
+<div class="mt-12 p-8 rounded-2xl bg-gradient-to-br from-secondary-container/20 to-primary/5 border border-outline-variant/10 relative overflow-hidden">
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-on-surface/5 rotate-12" data-icon="format_quote">format_quote</span>
+<p class="text-lg font-headline italic text-on-surface relative z-10 leading-relaxed">
+                  "The world is a book, and those who do not travel read only one page."
+                </p>
+<p class="text-sm font-semibold text-secondary-fixed-dim mt-4">— Saint Augustine</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation (Fixed Bottom) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 glass-nav border-t border-outline-variant/10 px-8 py-4 flex justify-between items-center z-[100]">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Plan</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Explore</span>
+</a>
+<div class="relative -top-8">
+<button class="bg-primary text-on-primary h-14 w-14 rounded-full shadow-lg shadow-primary/30 flex items-center justify-center border-4 border-surface">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">My Trips</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</div>
+</body></html>
