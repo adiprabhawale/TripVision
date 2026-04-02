@@ -13,6 +13,7 @@ import { MapView } from './map-view';
 import { Separator } from './ui/separator';
 import { exportToPDF } from '@/lib/pdf-export';
 import { cn } from '@/lib/utils';
+import { track } from '@vercel/analytics';
 
 interface ItineraryDisplayProps {
   itineraryData: ItineraryData;
@@ -67,7 +68,13 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                 variant="outline" 
                 size="sm" 
                 className="h-11 px-5 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 transition-all font-bold text-[10px] uppercase tracking-widest gap-2"
-                onClick={() => exportToPDF(itineraryData, preferences)}
+                onClick={() => {
+                  track('itinerary_export_pdf', { 
+                    destination: preferences.destination,
+                    trip_id: tripId || 'unknown'
+                  });
+                  exportToPDF(itineraryData, preferences);
+                }}
             >
                 <Download className="h-4 w-4 text-primary" />
                 PDF
@@ -77,7 +84,10 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                 <Button
                     variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                     size="sm"
-                    onClick={() => setViewMode('list')}
+                    onClick={() => {
+                      track('itinerary_view_mode', { mode: 'timeline', trip_id: tripId || 'unknown' });
+                      setViewMode('list');
+                    }}
                     className={cn(
                       "h-9 px-4 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all duration-300",
                       viewMode === 'list' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"
@@ -88,7 +98,10 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                 <Button
                     variant={viewMode === 'map' ? 'secondary' : 'ghost'}
                     size="sm"
-                    onClick={() => setViewMode('map')}
+                    onClick={() => {
+                      track('itinerary_view_mode', { mode: 'map', trip_id: tripId || 'unknown' });
+                      setViewMode('map');
+                    }}
                     className={cn(
                       "h-9 px-4 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all duration-300",
                       viewMode === 'map' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"

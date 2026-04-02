@@ -28,6 +28,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { track } from '@vercel/analytics';
 
 export function CollaborationBar({ tripId }: { tripId: string }) {
   const { user } = useAuth();
@@ -72,6 +73,7 @@ export function CollaborationBar({ tripId }: { tripId: string }) {
   const inviteLink = typeof window !== 'undefined' ? window.location.href : '';
   
   const handleCopyLink = () => {
+    track('share_invite_link', { method: 'copy_link', trip_id: tripId });
     navigator.clipboard.writeText(inviteLink);
     setCopied(true);
     toast({
@@ -143,13 +145,13 @@ export function CollaborationBar({ tripId }: { tripId: string }) {
               </div>
               
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" size="lg" className="gap-3 rounded-2xl h-14 bg-white/5 border-white/5 hover:bg-green-500/5 hover:border-green-500/30 group/btn transition-all duration-500" asChild>
+                <Button variant="outline" size="lg" className="gap-3 rounded-2xl h-14 bg-white/5 border-white/5 hover:bg-green-500/5 hover:border-green-500/30 group/btn transition-all duration-500" asChild onClick={() => track('share_invite_link', { method: 'whatsapp', trip_id: tripId })}>
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-4 w-4 text-green-500 group-hover/btn:scale-125 transition-transform" />
                     <span className="font-bold text-xs tracking-widest uppercase">WhatsApp</span>
                   </a>
                 </Button>
-                <Button variant="outline" size="lg" className="gap-3 rounded-2xl h-14 bg-white/5 border-white/5 hover:bg-blue-500/5 hover:border-blue-500/30 group/btn transition-all duration-500" asChild>
+                <Button variant="outline" size="lg" className="gap-3 rounded-2xl h-14 bg-white/5 border-white/5 hover:bg-blue-500/5 hover:border-blue-500/30 group/btn transition-all duration-500" asChild onClick={() => track('share_invite_link', { method: 'email', trip_id: tripId })}>
                   <a href={emailUrl}>
                     <Mail className="h-4 w-4 text-blue-500 group-hover/btn:scale-125 transition-transform" />
                     <span className="font-bold text-xs tracking-widest uppercase">Email</span>
