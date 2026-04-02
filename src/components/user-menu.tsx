@@ -17,7 +17,6 @@ import { db } from '@/lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { PricingModal } from './pricing-modal';
-import { track } from '@vercel/analytics';
 
 export function UserMenu() {
   const { user, logout, loading, signInWithGoogle } = useAuth();
@@ -40,7 +39,6 @@ export function UserMenu() {
     return (
       <Button 
         onClick={() => {
-          track('auth_sign_in_click', { provider: 'google' });
           signInWithGoogle();
         }} 
         variant="outline" 
@@ -106,7 +104,6 @@ export function UserMenu() {
             <DialogTrigger asChild>
               <DropdownMenuItem 
                 className="cursor-pointer text-primary font-medium focus:text-primary"
-                onClick={() => track('upgrade_pro_click', { source: 'user_menu' })}
               >
                 <Crown className="mr-2 h-4 w-4 fill-current" />
                 Upgrade to Pro
@@ -129,7 +126,6 @@ export function UserMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuItem 
             onClick={() => {
-              track('auth_logout_click');
               logout();
             }} 
             className="text-destructive focus:text-destructive"

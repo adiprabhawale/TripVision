@@ -9,7 +9,6 @@ import { Button } from './ui/button';
 import { MapPin, Calendar, ArrowRight, PlaneTakeoff, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { track } from '@vercel/analytics';
 
 export function TripDashboard() {
   const [trips, setTrips] = useState<any[]>([]);
@@ -40,7 +39,6 @@ export function TripDashboard() {
   }, [user, getIdToken]);
 
   const handleViewItinerary = (tripId: string) => {
-    track('trip_view_hub_click', { trip_id: tripId });
     setLoadingTripId(tripId);
     router.push(`/trip/${tripId}`);
   };
