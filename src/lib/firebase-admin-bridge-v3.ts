@@ -1,7 +1,7 @@
-// src/lib/firebase-admin-node.js
-const admin = require('firebase-admin');
+// src/lib/firebase-admin-bridge-v3.ts
+import * as admin from 'firebase-admin';
 
-let app;
+let app: admin.app.App;
 
 function getAdminApp() {
   if (admin.apps.length === 0) {
@@ -16,25 +16,19 @@ function getAdminApp() {
       databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
     });
   } else {
-    app = admin.apps[0];
+    app = admin.apps[0]!;
   }
   return app;
 }
 
-function getAdminAuth() {
+export function getAdminAuth() {
     return admin.auth(getAdminApp());
 }
 
-function getAdminDb() {
+export function getAdminDb() {
     return admin.firestore(getAdminApp());
 }
 
-function getFieldValue() {
+export function getFieldValue() {
     return admin.firestore.FieldValue;
 }
-
-module.exports = {
-    getAdminAuth,
-    getAdminDb,
-    getFieldValue
-};
