@@ -24,6 +24,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: [
+    'firebase-admin', 
+    'firebase-admin/app', 
+    'firebase-admin/auth', 
+    'firebase-admin/firestore',
+    'google-auth-library',
+    'gtoken',
+    'jws',
+    'jwa',
+    'buffer-equal-constant-time',
+    '@google-cloud/firestore', 
+    '@google-cloud/storage'
+  ],
 };
 
 export default nextConfig;

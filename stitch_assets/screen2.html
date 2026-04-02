@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VoyagePremium - Amalfi Coast '24</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#10131a",
+              "on-surface": "#e0e2ec",
+              "inverse-primary": "#005db8",
+              "inverse-on-surface": "#2d3038",
+              "on-primary": "#002f64",
+              "surface-container-lowest": "#0b0e15",
+              "primary-container": "#4090fe",
+              "on-primary-fixed": "#001b3e",
+              "error-container": "#93000a",
+              "on-tertiary": "#532200",
+              "surface-container-high": "#272a31",
+              "surface": "#10131a",
+              "surface-tint": "#aac7ff",
+              "surface-bright": "#363940",
+              "on-tertiary-fixed-variant": "#763400",
+              "surface-container": "#1c2026",
+              "tertiary-fixed-dim": "#ffb68c",
+              "on-primary-container": "#002958",
+              "secondary-container": "#2e4770",
+              "on-tertiary-container": "#481d00",
+              "on-background": "#e0e2ec",
+              "inverse-surface": "#e0e2ec",
+              "on-secondary": "#153058",
+              "tertiary-container": "#e3711f",
+              "on-secondary-container": "#9db6e5",
+              "on-error": "#690005",
+              "outline-variant": "#414753",
+              "on-error-container": "#ffdad6",
+              "background": "#10131a",
+              "secondary-fixed-dim": "#afc7f7",
+              "primary-fixed-dim": "#aac7ff",
+              "primary-fixed": "#d6e3ff",
+              "on-surface-variant": "#c1c6d5",
+              "on-tertiary-fixed": "#321200",
+              "secondary": "#afc7f7",
+              "outline": "#8b919f",
+              "tertiary": "#ffb68c",
+              "surface-container-low": "#181c22",
+              "error": "#ffb4ab",
+              "tertiary-fixed": "#ffdbc9",
+              "surface-variant": "#32353c",
+              "secondary-fixed": "#d6e3ff",
+              "primary": "#aac7ff",
+              "on-secondary-fixed": "#001b3e",
+              "on-primary-fixed-variant": "#00458d",
+              "on-secondary-fixed-variant": "#2e4770",
+              "surface-container-highest": "#32353c"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(28, 32, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 shadow-2xl flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-6">
+<span class="text-xl font-bold tracking-tight text-white font-headline">VoyagePremium</span>
+<div class="hidden md:flex items-center px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
+<input class="bg-transparent border-none text-sm focus:ring-0 text-on-surface placeholder:text-outline w-48" placeholder="Search trip..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-2 mr-4">
+<img alt="Sarah" class="w-8 h-8 rounded-full border-2 border-surface" data-alt="professional portrait of a young woman named Sarah with a friendly smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6DZ1OTMtfKsLnDodvVcssuefc2_0zIDbhm2XjdTwoh1cm8UWtczJrhwek5rSB458hV0ZYWvEGIIdOFbG6upMNYgBWUQihSUfPX_R4ouhgWyksgLUIj4VgmXqFcqgvcKqMoQrV9yFkKwlt6uqZSyLTF9WsOGDSBLxodZIbcKOwdnTdrSE6eyrnUxGNWg62bC0c6-97-JYLIPuDCfLrDOv10eQ3OnrUXAF3SAWn7HWQXtTxPGBD1gCGlik-e3hAhvbcph6K6jmeP8U"/>
+<img alt="Mark" class="w-8 h-8 rounded-full border-2 border-surface" data-alt="close-up of a smiling man named Mark with short dark hair in a bright setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpyD5l5G3ByIOYZl9NnwaK4PBg9m4owDiSBaZ1zsQ8q_0_i8a1zfbIDryqaBPJiFs0zoEjMhG4aBFtKEWxG9sEJBGdNPyl1dMnU7jf0POU7RIe89-OB6aqzvEK_wtafLks_8NjGpwTC3v0Bcm6vcjOwDo0PPS_9HSKujemZ7oL3FR9b1S50BOxB1QL0vKXAg3aWyUkknPJTTqgT5HhefIK1B9b7cPfazEFQlGbSk60XkwPqg3t7hlgSqQ1C2Cijf0I1oOZX-8l05s"/>
+<img alt="Julian" class="w-8 h-8 rounded-full border-2 border-surface" data-alt="man named Julian with glasses looking at the camera in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUii4IMZTHUAhW6f3aK65Gn84zO8jkP9U7JqrBE-NO2UrkccauHbaY-nxMRT7Qz3Z20mI54smssPy-n88gbTnXLMS9nKHi5H9mAvUJP75PMxeg9Wmn_79myL3BOg1vvWVPGvi-7DW0Dr6HWntSxbP4oiUSHz9zJDka4qxo8bYuhTZW-7vAJl46yuhx9y4xJclzvh3Di2nLln18FW9chAH2teqdpeKZUYaGIvH73oiPQyzej2XQybMSSDXe5aK1BB8mn1yjAYc409U"/>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold border-2 border-surface">+2</div>
+</div>
+<button class="text-slate-400 hover:text-blue-300 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-blue-300 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="User profile" class="w-9 h-9 rounded-full object-cover border border-primary/20" data-alt="User profile photo of a person looking stylish in a urban setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVxw3EBMFPbkTVW_Z0_L4T-vq8YrwuqinJDzRLbGxUj5ZEK1oRY71VaQIpbKNJrN11py5pN8bzpF80d7C3QYiT2Ip_kqU4S6_Hrk-7u8YGqkDXmbtiP-4m7vkzYP-06RdauakAMsbyhG4W5HxG2pHUtu0UVFKj3oDPJigZsPYFezVTeLkyxwW-Kor1ktWFu0-TY1yMsCJET4d74wbhW1e-zZRXz-Q0IznaMp-_XDv2jmTB6854yO_TzApqfsEVkmwv35ygnKsO_dc"/>
+</div>
+</header>
+<!-- Sidebar Layout -->
+<div class="flex pt-16">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 border-r border-slate-800 bg-slate-900 flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] overflow-y-auto z-40">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">landscape</span>
+</div>
+<div>
+<h2 class="text-white font-black text-lg leading-tight">Amalfi Coast '24</h2>
+<p class="text-slate-500 text-xs font-label">6 Travelers</p>
+</div>
+</div>
+<div class="space-y-1 mb-8">
+<!-- Itinerary is Active -->
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600/10 text-blue-400 border-r-2 border-blue-500 font-['Inter'] text-sm active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span>Itinerary</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800/50 font-['Inter'] text-sm hover:bg-slate-800 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Packing List</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800/50 font-['Inter'] text-sm hover:bg-slate-800 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Budget</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800/50 font-['Inter'] text-sm hover:bg-slate-800 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Documents</span>
+</a>
+</div>
+<button class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg text-sm mb-12 hover:bg-primary-container transition-colors shadow-lg">
+                    Invite Friends
+                </button>
+<div class="mt-auto border-t border-slate-800 pt-6 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800/50 font-['Inter'] text-sm transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800/50 font-['Inter'] text-sm transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 mr-80 flex-1 p-8 min-h-screen">
+<div class="max-w-4xl mx-auto">
+<header class="mb-10">
+<div class="flex items-center gap-4 mb-2">
+<span class="px-3 py-1 bg-tertiary-container/20 text-tertiary font-bold text-xs uppercase tracking-widest rounded">Coming Up</span>
+<h1 class="text-4xl font-black tracking-tight text-on-surface font-headline">Day 1: Arrival &amp; London Introduction</h1>
+</div>
+<p class="text-outline text-lg max-w-2xl">Beginning the journey with a European stopover before heading to the Italian coast.</p>
+</header>
+<div class="space-y-8 relative">
+<!-- Timeline Line -->
+<div class="absolute left-6 top-4 bottom-4 w-0.5 bg-slate-800"></div>
+<!-- Afternoon Activity -->
+<div class="relative pl-16 group">
+<div class="absolute left-[21px] top-6 w-3 h-3 rounded-full bg-primary border-4 border-background z-10"></div>
+<div class="glass-card rounded-xl overflow-hidden flex flex-col md:flex-row shadow-xl hover:border-primary/30 transition-all duration-300">
+<div class="w-full md:w-56 h-48 md:h-auto overflow-hidden relative">
+<img alt="London Heathrow" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="iconic London view of Big Ben and the red buses on a cloudy afternoon with moody lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg2cEiEWw3MrkBT5O71g4Z4VdLhgaHI8Hp8HtvozZImt4hMzcfk0AjHCP0OuLZa_m13kUgj2FnXPmm0FF91DBngnMeQzkA0KWAfzC4bEInZ4PpTRFXzBUcmraEOFwwHwZVu4BlM8tzgyLNaRzgoD9TorHJUm9pjJ3QA27DkHi4ybJnlnOeunkI6jKQtveitS6Xd4Ch2nxExaa9FKD25Qnc2NSW5-PyWp_zUqzuu80vDwR8qS5I7wr5b30r0qZibFDjg2Xa53U9aUU"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-black/40 backdrop-blur-md rounded text-[10px] font-bold text-white uppercase tracking-tighter">14:30 PM</div>
+</div>
+<div class="flex-1 p-6">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h3 class="text-xl font-bold text-white mb-1">Arrive at London Heathrow (LHR)</h3>
+<p class="text-slate-400 text-sm leading-relaxed">Check-in at the terminal and transfer to the central hotel via Heathrow Express.</p>
+</div>
+<div class="text-right">
+<p class="text-tertiary font-bold">$45.00</p>
+<p class="text-[10px] text-outline uppercase font-bold tracking-widest">Est. Cost</p>
+</div>
+</div>
+<div class="flex items-center gap-6 mt-6 pt-4 border-t border-slate-800/50">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+<span class="text-xs font-bold">12</span>
+</button>
+</div>
+<div class="flex-1 flex items-center gap-3">
+<img alt="Julian" class="w-6 h-6 rounded-full" data-alt="close-up of Julian smiling warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFJmeQ98UMmlixw6Ly7wZXJRG4BIh4r2Er2YmpOT6ocjL4g4lVq7_fum-udlnydOTehQPpNJVWKAiDmpMLYjYmXNk6Zt7Ud8zyTOFd7epv5-EP5x-PZ9fnIW3bP3HsTsbhZNPzsmbmaOAYX8Q5DLZZuJLvjp3xU6L2zLvWAjhgkTVe5YeMwRgQOAsExBHKgqYbaLqOFzQ9K-UFC9yLboADJgVI-p_5lqgETsCviD6wVKCOAsUq_0vOJZiZhmIMldBLCFOUxzJx-4k"/>
+<p class="text-xs text-outline italic">"Can we grab SIM cards at the airport?"</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Evening Activity -->
+<div class="relative pl-16 group">
+<div class="absolute left-[21px] top-6 w-3 h-3 rounded-full bg-slate-700 border-4 border-background z-10"></div>
+<div class="glass-card rounded-xl overflow-hidden flex flex-col md:flex-row shadow-xl hover:border-primary/30 transition-all duration-300">
+<div class="w-full md:w-56 h-48 md:h-auto overflow-hidden relative">
+<img alt="Gastropub Dinner" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="interior of a cozy London gastropub with warm amber lighting and dark wood finishes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjwYJEHTbSrC1EShD0CHzMHEA8yQcmd3_dzzZHzSxjYcm4U21R02wwbFPTQ_-wvVSQ5UeVG-DFmXY3rYDzLbF5_EMPvU5KllOOoMwYiDjRljFS8lHI6g3PWUfLT9QsPbV8S-RhkDAaTz4Dz5UNL65vGpjjoKz0gaiZJUFLmuKd4Xyw9RuAVH7u_bR65Fha7aWBs5GHxyujhmYciI3FeclI4fyyCzUVuK4bZBIFJvE2sKpBe-oezPYpnIUCxVm-sE03uKhWq0dkIgU"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-black/40 backdrop-blur-md rounded text-[10px] font-bold text-white uppercase tracking-tighter">19:30 PM</div>
+</div>
+<div class="flex-1 p-6">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h3 class="text-xl font-bold text-white mb-1">Casual dinner at a local gastropub</h3>
+<p class="text-slate-400 text-sm leading-relaxed">Relaxed meal at 'The Churchill Arms' to kick off the trip with the whole group.</p>
+</div>
+<div class="text-right">
+<p class="text-tertiary font-bold">$60.00</p>
+<p class="text-[10px] text-outline uppercase font-bold tracking-widest">Est. Cost</p>
+</div>
+</div>
+<div class="flex items-center gap-6 mt-6 pt-4 border-t border-slate-800/50">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 text-slate-400 rounded-full hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">thumb_up</span>
+<span class="text-xs font-bold">8</span>
+</button>
+</div>
+<div class="flex-1 flex items-center gap-3">
+<img alt="Sarah" class="w-6 h-6 rounded-full" data-alt="professional portrait of Sarah" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXgBetCFxl4b2bhQW57uodcjgiHnNf7DHnKrevc13UBnAU-nmdZuW8KsQERZ4iRaCk2RknAn52kyciU7B952cBmoMAAtAvJPyx8ktmhkNkNU0rHLiUGgm2ewujuVpYf-CEtBD4h8B96_hbb5y1as-ngHiKULJ16mnYmYDPmooErGPJCHcYhB0inb6YyjXlH5wwXqaoEQKICepT66LQrsrrIYKsw_tcXv0dkj6bNhYraCn3giLa0_Bt-b89RrsImcVXhhU0a3j_oho"/>
+<p class="text-xs text-outline italic">"They have the best pies here!"</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Future Day Preview -->
+<div class="relative pl-16 opacity-40">
+<div class="absolute left-[21px] top-6 w-3 h-3 rounded-full bg-slate-800 border-4 border-background z-10"></div>
+<div class="p-6 border-2 border-dashed border-slate-800 rounded-xl">
+<h3 class="text-lg font-bold text-slate-500">Day 2: Morning Flight to Naples</h3>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar (Trip Pulse) -->
+<aside class="fixed right-0 top-16 w-80 h-[calc(100vh-64px)] bg-surface-container-low border-l border-slate-800 p-6 overflow-y-auto z-40">
+<h2 class="text-sm font-bold uppercase tracking-widest text-primary mb-6">Trip Pulse</h2>
+<!-- Weather Widget -->
+<div class="glass-card p-4 rounded-xl mb-6">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-xs text-outline font-bold uppercase">Destination</p>
+<h4 class="text-lg font-bold text-white">London, UK</h4>
+</div>
+<span class="material-symbols-outlined text-3xl text-tertiary" style="font-variation-settings: 'FILL' 1;">cloudy_filled</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-black text-white">14°C</span>
+<span class="text-sm text-outline mb-1">Overcast</span>
+</div>
+</div>
+<!-- Budget Tracker -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-2">
+<h4 class="text-xs font-bold uppercase tracking-tight text-on-surface">Budget Tracker</h4>
+<span class="text-xs font-bold text-primary">49%</span>
+</div>
+<div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+<div class="h-full bg-primary" style="width: 49%"></div>
+</div>
+<div class="flex justify-between">
+<p class="text-[10px] text-outline">Spent: $2,450</p>
+<p class="text-[10px] text-outline">Limit: $5,000</p>
+</div>
+</div>
+<!-- Collaborative Packing List -->
+<div class="mb-10">
+<h4 class="text-xs font-bold uppercase tracking-tight text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+                    Packing List
+                </h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all border border-transparent hover:border-slate-700">
+<input checked="" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-primary focus:ring-offset-slate-900" type="checkbox"/>
+<span class="text-sm text-slate-500 line-through">UK plug converters</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all border border-transparent hover:border-slate-700">
+<input class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-primary focus:ring-offset-slate-900" type="checkbox"/>
+<span class="text-sm text-on-surface">Light linen shirts</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all border border-transparent hover:border-slate-700">
+<input class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-primary focus:ring-offset-slate-900" type="checkbox"/>
+<span class="text-sm text-on-surface">Travel insurance docs</span>
+</label>
+</div>
+<button class="mt-4 text-[10px] font-bold text-primary hover:text-primary-container flex items-center gap-1 uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">add</span> Add Item
+                </button>
+</div>
+<!-- Download PDF Itinerary -->
+<button class="w-full flex items-center justify-center gap-2 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-700 shadow-lg active:scale-95">
+<span class="material-symbols-outlined text-xl">download</span>
+<span>Download PDF Itinerary</span>
+</button>
+</aside>
+</div>
+</body></html>

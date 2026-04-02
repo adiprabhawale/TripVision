@@ -4,6 +4,7 @@ export interface Location {
 }
 
 export interface Activity {
+  id: string;
   time: string;
   description: string;
   estimated_cost: string;

@@ -38,6 +38,7 @@ const GeneratePersonalizedTripItineraryOutputSchema = z.object({
       theme: z.string(),
       activities: z.array(
         z.object({
+          id: z.string().describe('A unique identifier for the activity (e.g., "act_1").'),
           time: z.string(),
           description: z.string(),
           estimated_cost: z.string(),
@@ -69,10 +70,9 @@ export type GeneratePersonalizedTripItineraryOutput =
   z.infer<typeof GeneratePersonalizedTripItineraryOutputSchema>;
 
 export async function generatePersonalizedTripItinerary(
-  input: GeneratePersonalizedTripItineraryInput,
-  apiKey: string
+  input: GeneratePersonalizedTripItineraryInput
 ): Promise<GeneratePersonalizedTripItineraryOutput> {
-  return generatePersonalizedTripItineraryFlow(input, apiKey);
+  return generatePersonalizedTripItineraryFlow(input);
 }
 
 function getPrompt(ai: any) {
@@ -124,6 +124,7 @@ function getPrompt(ai: any) {
                 "items": {
                   "type": "OBJECT",
                   "properties": {
+                    "id": { "type": "STRING" },
                     "time": { "type": "STRING" },
                     "description": { "type": "STRING" },
                     "estimated_cost": { "type": "STRING" },
@@ -197,10 +198,9 @@ function getPrompt(ai: any) {
 
 
 async function generatePersonalizedTripItineraryFlow(
-  input: GeneratePersonalizedTripItineraryInput,
-  apiKey: string
+  input: GeneratePersonalizedTripItineraryInput
 ): Promise<GeneratePersonalizedTripItineraryOutput> {
-    const ai = getAi(apiKey);
+    const ai = getAi();
     const prompt = getPrompt(ai);
     const {output} = await prompt(input);
     return output!;
