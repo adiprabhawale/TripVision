@@ -9,7 +9,6 @@ import { Progress } from './ui/progress';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
-import { track } from '@vercel/analytics';
 
 interface TripPulseProps {
   tripData?: any;
@@ -195,11 +194,6 @@ export function TripPulse({ tripData, standalone = false }: TripPulseProps) {
                       className="w-full rounded-xl h-10 text-[10px] font-bold uppercase tracking-widest border-white/5 hover:bg-primary hover:text-white transition-all gap-2 group-hover:translate-y-[-2px]"
                       onClick={() => {
                         if (option.bookingLink) {
-                          track('stay_booking_click', { 
-                            hotel_name: option.name,
-                            price: option.price_per_night,
-                            trip_destination: tripData?.preferences?.destination
-                          });
                           window.open(option.bookingLink, '_blank');
                         }
                       }}
@@ -240,11 +234,6 @@ export function TripPulse({ tripData, standalone = false }: TripPulseProps) {
                         className="w-full rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-white font-bold h-10 text-[10px] uppercase tracking-widest transition-all"
                         onClick={() => {
                           if (option.bookingLink) {
-                            track('travel_booking_click', { 
-                              provider_name: option.name,
-                              fare: option.fare,
-                              trip_destination: tripData?.preferences?.destination
-                            });
                             window.open(option.bookingLink, '_blank');
                           }
                         }}

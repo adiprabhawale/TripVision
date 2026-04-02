@@ -13,7 +13,6 @@ import { MapView } from './map-view';
 import { Separator } from './ui/separator';
 import { exportToPDF } from '@/lib/pdf-export';
 import { cn } from '@/lib/utils';
-import { track } from '@vercel/analytics';
 
 interface ItineraryDisplayProps {
   itineraryData: ItineraryData;
@@ -69,10 +68,6 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                 size="sm" 
                 className="h-11 px-5 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 transition-all font-bold text-[10px] uppercase tracking-widest gap-2"
                 onClick={() => {
-                  track('itinerary_export_pdf', { 
-                    destination: preferences.destination,
-                    trip_id: tripId || 'unknown'
-                  });
                   exportToPDF(itineraryData, preferences);
                 }}
             >
@@ -85,7 +80,6 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                     variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                     size="sm"
                     onClick={() => {
-                      track('itinerary_view_mode', { mode: 'timeline', trip_id: tripId || 'unknown' });
                       setViewMode('list');
                     }}
                     className={cn(
@@ -99,7 +93,6 @@ export function ItineraryDisplay({ itineraryData, preferences, tripId }: Itinera
                     variant={viewMode === 'map' ? 'secondary' : 'ghost'}
                     size="sm"
                     onClick={() => {
-                      track('itinerary_view_mode', { mode: 'map', trip_id: tripId || 'unknown' });
                       setViewMode('map');
                     }}
                     className={cn(
