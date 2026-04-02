@@ -6,9 +6,8 @@ import type { Firestore } from 'firebase-admin/firestore';
 // with firebase-admin. This is the most stable way to load it in SSR.
 // v4: Lazy-load INSIDE getters to prevent evaluation during SSR setup.
 const getBridge = () => {
-    const path = eval('require')('path');
-    const bridgePath = path.join(process.cwd(), 'src/lib/firebase-admin-bridge-v3.js');
-    return eval('require')(bridgePath);
+    // Standard relative require ensures the file is bundled by Next.js
+    return require('./firebase-admin-bridge-v3.js');
 };
 
 export const getAdminAuth = async (): Promise<Auth> => {
