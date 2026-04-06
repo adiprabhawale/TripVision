@@ -30,8 +30,9 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# Firebase/Google Configuration
+google-services.json
+GoogleService-Info.plist
 
 # typescript
 *.tsbuildinfo
