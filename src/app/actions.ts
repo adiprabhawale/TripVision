@@ -1,6 +1,7 @@
 'use server';
 
-import { generatePersonalizedTripItinerary } from '@/ai/flows/generate-personalized-trip-itinerary';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { app } from '@/lib/firebase';
 import type { TripPreferences } from '@/types/trip';
 import { format } from 'date-fns';
 import { getAdminAuth, getAdminDb, getFieldValue } from '@/lib/firebase-admin';
@@ -57,25 +58,25 @@ export async function getItinerary(
         return { error: 'Please enter a valid number of people.' };
     }
 
-    // 4. Generate Itinerary
-    const result = await generatePersonalizedTripItinerary(validatedPreferences);
-
-    // 5. Save Trip to Firestore
-    const tripRef = await adminDb.collection('trips').add({
-      ...result,
-      preferences: validatedPreferences,
-      userId: uid,
-      createdAt: FieldValue.serverTimestamp(),
-      collaborators: [uid],
+    // 4. Generate Itinerary via Unified API (Sync with Mobile)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
+    const response = await fetch(`${baseUrl}/api/generate-itinerary`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ preferences: validatedPreferences })
     });
 
-    // 6. Update User Usage
-    await userRef.update({
-      lastTripTimestamp: FieldValue.serverTimestamp(),
-      tripCount: (userData?.tripCount || 0) + 1,
-    });
+    const body = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(body.error || 'Failed to generate itinerary via API.');
+    }
 
-    return { data: result, tripId: tripRef.id };
+    return { data: body.data, tripId: body.tripId };
+
   } catch (e: any) {
     console.error(e);
     return { error: e.message || 'Failed to generate itinerary. Please try again.' };
