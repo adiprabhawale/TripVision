@@ -5,6 +5,7 @@ import { app } from '@/lib/firebase';
 import type { TripPreferences } from '@/types/trip';
 import { format } from 'date-fns';
 import { getAdminAuth, getAdminDb, getFieldValue } from '@/lib/firebase-admin';
+import { handleGenerateItinerary } from '@/lib/services/itinerary';
 
 export async function getItinerary(
   preferences: TripPreferences,
@@ -58,24 +59,14 @@ export async function getItinerary(
         return { error: 'Please enter a valid number of people.' };
     }
 
-    // 4. Generate Itinerary via Unified API (Sync with Mobile)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
-    const response = await fetch(`${baseUrl}/api/generate-itinerary`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ preferences: validatedPreferences })
-    });
+    // 4. Generate Itinerary via Shared Service (Direct Call for Stability)
+    const result = await handleGenerateItinerary(token, validatedPreferences);
 
-    const body = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(body.error || 'Failed to generate itinerary via API.');
+    if (!result.success) {
+      return { error: result.error || 'Failed to generate itinerary. Please try again.' };
     }
 
-    return { data: body.data, tripId: body.tripId };
+    return { data: result.data, tripId: result.tripId };
 
   } catch (e: any) {
     console.error(e);
